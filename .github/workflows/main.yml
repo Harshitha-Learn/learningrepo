@@ -54,5 +54,6 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUB_ID }}
         scope: subscription
+        region: westeurope
         template: ./main.bicep
         failOnStdErr: false
