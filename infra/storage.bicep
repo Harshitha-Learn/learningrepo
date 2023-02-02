@@ -1,3 +1,4 @@
+targetScope = 'subscription'
 @minLength(3)
 @maxLength(11)
 param storagePrefix string ='stg'
@@ -12,7 +13,7 @@ param storagePrefix string ='stg'
   'Standard_GZRS'
   'Standard_RAGZRS'
 ])
-targetScope = 'resourceGroup'
+
 param storageSKU string = 'Standard_LRS'
 
 param location string = resourceGroup().location
