@@ -30,7 +30,7 @@ jobs:
          az account set --subscription ${{env.AZURE_SUB_ID}}
     - name: 'Lint code'
       run: |
-        az bicep build --file ./infra/main.bicep     
+        az bicep build --file ./infra/storage.bicep     
         
     - name: 'Bicep validation'
       run: |
@@ -38,6 +38,37 @@ jobs:
             --location westeurope \
             --template-file ./infra/main.bicep
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: sampleapp11
+
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      working-directory: sampleapp11
+      
+    - name: Test
+      run: dotnet test
+      working-directory: sampleapp11
+
+    
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: sampleapp22
+
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      working-directory: sampleapp22
+      
+    - name: Test
+      run: dotnet test
+      working-directory: sampleapp22
 
   deploy_on_dev:
     runs-on: ubuntu-latest
@@ -51,17 +82,12 @@ jobs:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDS }}
-    
-    - name: 'set sub'
-      run: |
-         az account set --subscription ${{env.AZURE_SUB_ID}}
-  
+
       # Deploy Bicep file
     - name: deploy
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUB_ID }}
         scope: subscription
-        region: westeurope
-        template: ./infra/main.bicep
+        template: ./main.bicep
         failOnStdErr: false
