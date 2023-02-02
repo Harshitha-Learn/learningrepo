@@ -47,6 +47,16 @@ jobs:
      # Checkout code
     - uses: actions/checkout@main
 
+    
+    - name: 'Az login'
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDS}}
+
+    - name: 'set sub'
+      run: |
+         az account set --subscription ${{env.AZURE_SUB_ID}}
+
       # Deploy Bicep file
     - name: deploy
       uses: azure/arm-deploy@v1
