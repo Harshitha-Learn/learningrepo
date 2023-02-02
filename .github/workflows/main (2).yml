@@ -9,7 +9,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: test-app-13
   AZURE_WEBAPP_PATH: '.'
-  DOTNET_VERSION: '2.2.101'
+  DOTNET_VERSION: '6.0.x'
 
 jobs:
   build-and-deploy:
