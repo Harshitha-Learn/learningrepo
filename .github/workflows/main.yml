@@ -5,10 +5,7 @@ name: bicep
 
 on:  
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+ 
   
 env:
   AZURE_SUB_ID: '97a9a77c-8104-417e-995b-eace2cfd65eb'
