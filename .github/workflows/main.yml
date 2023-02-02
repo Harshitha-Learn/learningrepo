@@ -28,7 +28,15 @@ jobs:
     - name: 'set sub'
       run: |
          az account set --subscription ${{env.AZURE_SUB_ID}}
-  
+    - name: 'Lint code'
+      run: |
+        az bicep build --file ./infra/main.bicep     
+        
+    - name: 'Bicep validation'
+      run: |
+        az deployment sub validate \
+            --location westeurope \
+            --template-file ./infra/main.bicep
 
 
   deploy_on_dev:
