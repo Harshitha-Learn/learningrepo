@@ -12,6 +12,7 @@ param storagePrefix string ='stg'
   'Standard_GZRS'
   'Standard_RAGZRS'
 ])
+targetScope = 'resourceGroup'
 param storageSKU string = 'Standard_LRS'
 
 param location string = resourceGroup().location
