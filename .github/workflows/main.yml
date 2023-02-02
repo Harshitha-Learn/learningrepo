@@ -35,5 +35,5 @@ jobs:
     - name: 'Bicep validation'
       run: |
         az deployment sub validate \
-            --location WEST_EUROPE \
+            --location westeurope \
             --template-file ./infra/storage.bicep
