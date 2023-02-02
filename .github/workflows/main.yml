@@ -44,8 +44,9 @@ jobs:
     needs: build
     environment: Dev
     steps:
+     # Checkout code
+    - uses: actions/checkout@main
 
-  
       # Deploy Bicep file
     - name: deploy
       uses: azure/arm-deploy@v1
