@@ -88,5 +88,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUB_ID }}
+        scope: subscription
         template: ./main.bicep
         failOnStdErr: false
