@@ -44,17 +44,7 @@ jobs:
     needs: build
     environment: Dev
     steps:
-     # Checkout code
-    - uses: actions/checkout@main
 
-      # Log into Azure
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDS }}
-    
-    - name: 'set sub'
-      run: |
-         az account set --subscription ${{env.AZURE_SUB_ID}}
   
       # Deploy Bicep file
     - name: deploy
