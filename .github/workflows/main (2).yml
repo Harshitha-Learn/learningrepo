@@ -32,7 +32,8 @@ jobs:
         run: |
           dotnet build --configuration release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PATH }}/myapp'
-      
+        working-directory: sampleapp11
+
       - name: Deploy to App Service
         uses: azure/webapps-deploy@v2
         with:
