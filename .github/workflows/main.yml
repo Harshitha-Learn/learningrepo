@@ -98,6 +98,7 @@ jobs:
 
     - name: Publish
       run: dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' 
+      working-directory: sampleapp11
 
     - name: 'Run Azure webapp deploy action'
       uses: azure/webapps-deploy@v2
