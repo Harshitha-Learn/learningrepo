@@ -16,7 +16,7 @@ module stg './storage.bicep' = {
   name: 'storageDeployment'
   scope: rg    // Deployed in the scope of resource group we created above
   params: {
-    storageAccountName: 'stcontoso'
+    storageAccountName: 'teststg73h'
     location: location
   }
 }
