@@ -69,7 +69,8 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: sampleapp22/
+                path: ./
+
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
