@@ -37,13 +37,13 @@ jobs:
         run: |
           dotnet restore
           dotnet build  --configuration Release
-        working-directory: sampleapp22
+        working-directory: sampleapp11
 
       - name: dotnet  publish
         run: |
          
           dotnet publish --configuration Release --output Release
-        working-directory: sampleapp22 
+        working-directory: sampleapp11 
 
 
 
@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
             name: webapp1
-            path: ./sampleapp22/Release
+            path: ./sampleapp11/Release
   
   deploy_on_dev:
        runs-on: ubuntu-latest
@@ -69,11 +69,11 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: ./sampleapp22/
+                path: ./sampleapp11/
           
 
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-                  package: ./sampleapp22/
+                  package: ./sampleapp11/
