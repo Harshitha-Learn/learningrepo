@@ -35,24 +35,5 @@ jobs:
       - name: dotnet build 
         run: |
           dotnet restore
-          dotnet build --configuration Release
-        working-directory: sampleapp11
-
-      # Run dotnet build and publish
-      - name: dotnet  publish
-        run: |
-         
-          dotnet publish --configuration release --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        working-directory: sampleapp11 
-
-      - name: 'Deploy to Azure WebApp'
-        uses: azure/webapps-deploy@v1
-        with:
-            app-name: ${{ env.AZURE_WEBAPP_NAME }}
-            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v1.0.0
-        with:
-            name: webapp
-            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          dotnet build sampleapp11/sampleapp11/sampleapp11csprj --configuration Release
+       
