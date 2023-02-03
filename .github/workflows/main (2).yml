@@ -32,8 +32,15 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
       
       # Run dotnet build and publish
-      - name: dotnet build and publish
+      - name: dotnet build 
         run: |
           dotnet restore
           dotnet build --configuration Release
+        working-directory: sampleapp11
+
+      # Run dotnet build and publish
+      - name: dotnet  publish
+        run: |
+         
+          dotnet publish --configuration release 
         working-directory: sampleapp11
