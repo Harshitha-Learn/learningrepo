@@ -42,5 +42,13 @@ jobs:
       - name: dotnet  publish
         run: |
          
-          dotnet publish --configuration release 
+          dotnet publish --configuration release /p:_PackageTempDir="\published\"
         working-directory: sampleapp11
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: ASP-app
+            path: '/published/**'
+
+        
