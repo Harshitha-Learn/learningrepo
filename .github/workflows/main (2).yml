@@ -9,7 +9,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: b1webapp    # set this to your application's namei
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
 jobs:
@@ -42,18 +42,12 @@ jobs:
       - name: dotnet  publish
         run: |
          
-          dotnet publish --configuration release -o ./outfolder
+          dotnet publish --configuration release --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
         working-directory: sampleapp11 
 
-      - name: upload artifact
-        uses: actions/upload-artifact@v2
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v1
         with:
-            name: ASP-app
-            path: /home/runner/work/learningrepo/learningrepo/sampleapp11/outfolder/
-
-      # Deploy to Azure Web apps
-      - name: 'Run Azure webapp deploy action using publish profile credentials'
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          package: /home/runner/work/learningrepo/learningrepo/sampleapp11/outfolder/
+            app-name: ${{ env.AZURE_WEBAPP_NAME }}
+            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        
