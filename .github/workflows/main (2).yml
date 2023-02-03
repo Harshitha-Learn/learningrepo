@@ -59,20 +59,20 @@ jobs:
        environment: Dev
        steps:
            # Checkout the repo
-          - uses: actions/checkout@main
-      
+         
     
           - name: 'Az login'
             uses: azure/login@v1
             with:
                 creds: ${{secrets.AZURE_CREDS}}
+
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: ./
+              #  path: ./
 
-          - name: 'Run Azure webapp deploy action '
-            uses: azure/webapps-deploy@v2
-            with: 
-                  app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-                  package: sampleapp22
+       #   - name: 'Run Azure webapp deploy action '
+       #     uses: azure/webapps-deploy@v2
+        #    with: 
+          #        app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          #        package: sampleapp22
