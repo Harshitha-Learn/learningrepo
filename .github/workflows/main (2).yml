@@ -8,7 +8,7 @@ on:
    
 
 env:
-  AZURE_WEBAPP_NAME: sampleapp1120230202210536    # set this to your application's namei
+  AZURE_WEBAPP_NAME: b1webapp    # set this to your application's namei
  # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
@@ -37,19 +37,19 @@ jobs:
         run: |
           dotnet restore
           dotnet build  --configuration Release
-        working-directory: sampleapp11
+        working-directory: sampleapp22
 
       - name: dotnet  publish
         run: |
          
           dotnet publish --configuration Release --output Release
-        working-directory: sampleapp11 
+        working-directory: sampleapp22 
 
 
       - name: 'Run Azure webapp deploy action using publish profile credentials'
         uses: azure/webapps-deploy@v2
         with: 
               app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-              package: ./sampleapp11/Release
+              package: ./sampleapp22/Release
 
 
