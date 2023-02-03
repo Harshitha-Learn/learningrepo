@@ -48,7 +48,7 @@ jobs:
 
 
       - name: Publish Artifacts
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3
         with:
             name: webapp1
             path: ./sampleapp22/Release
@@ -65,7 +65,7 @@ jobs:
             uses: azure/login@v1
             with:
                 creds: ${{secrets.AZURE_CREDS}}
-
+          
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
