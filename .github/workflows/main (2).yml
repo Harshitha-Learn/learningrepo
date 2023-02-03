@@ -35,5 +35,5 @@ jobs:
       - name: dotnet build 
         run: |
           dotnet restore
-          dotnet build sampleapp11/sampleapp11/sampleapp11.csproj --configuration Release
+          dotnet build **/*.csproj --configuration Release
        
