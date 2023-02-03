@@ -9,7 +9,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: b1webapp    # set this to your application's namei
-  AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
+ # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
 jobs:
@@ -42,12 +42,12 @@ jobs:
       - name: dotnet  publish
         run: |
          
-          dotnet publish --configuration release --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          dotnet publish --configuration release --output release
         working-directory: sampleapp11 
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v1.0.0
         with:
             name: webapp
-            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+            path: ./sampleapp11/release
   
