@@ -69,7 +69,9 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-              #  path: ./
+                path: ./
+          - name : List files
+            run: ls -R
 
        #   - name: 'Run Azure webapp deploy action '
        #     uses: azure/webapps-deploy@v2
