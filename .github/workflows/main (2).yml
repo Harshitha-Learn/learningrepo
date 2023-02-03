@@ -42,8 +42,8 @@ jobs:
       - name: dotnet  publish
         run: |
          
-          dotnet publish /webapp1/webapp1.csproj --configuration Release --output Release
-        working-directory: sampleapp11 
+          dotnet publish  --configuration Release --output Release
+        working-directory: sampleapp11/webapp1/
 
 
 
