@@ -51,4 +51,9 @@ jobs:
             name: ASP-app
             path: /home/runner/work/learningrepo/learningrepo/sampleapp11/outfolder/
 
-        
+      # Deploy to Azure Web apps
+      - name: 'Run Azure webapp deploy action using publish profile credentials'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          package: /home/runner/work/learningrepo/learningrepo/sampleapp11/outfolder/
