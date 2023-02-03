@@ -69,12 +69,11 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: /sampleapp22/
-          - name : List files
-            run: ls -R
+                path: ./
+          
 
-       #   - name: 'Run Azure webapp deploy action '
-       #     uses: azure/webapps-deploy@v2
-        #    with: 
-          #        app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          #        package: sampleapp22
+          - name: 'Run Azure webapp deploy action '
+            uses: azure/webapps-deploy@v2
+            with: 
+                  app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+                  package: webapp1
