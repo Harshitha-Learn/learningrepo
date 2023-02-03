@@ -53,3 +53,8 @@ jobs:
               package: ./sampleapp22/Release
 
 
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+            name: webapp1
+            path: ./sampleapp22/release
