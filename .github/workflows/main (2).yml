@@ -50,4 +50,9 @@ jobs:
         with:
             app-name: ${{ env.AZURE_WEBAPP_NAME }}
             package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+            name: webapp
+            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
