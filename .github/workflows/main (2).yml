@@ -49,6 +49,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: ASP-app
-            path: ./outfolder
+            path: /home/runner/work/learningrepo/learningrepo/sampleapp11/outfolder/
 
         
