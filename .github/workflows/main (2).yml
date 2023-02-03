@@ -42,7 +42,7 @@ jobs:
       - name: dotnet  publish
         run: |
          
-          dotnet publish --configuration release --output release
+          dotnet publish --configuration Release --output Release
         working-directory: sampleapp11 
 
 
@@ -50,6 +50,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with: 
               app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-              package: /home/runner/work/learningrepo/learningrepo/sampleapp11/release/
+              package: /home/runner/work/learningrepo/learningrepo/sampleapp11/Release/1
 
 
