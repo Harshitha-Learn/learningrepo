@@ -1,8 +1,10 @@
 name: .NET Core CI
 
-on:  
+on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
-   [push]
+    
    
 
 env:
