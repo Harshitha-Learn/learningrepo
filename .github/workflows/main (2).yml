@@ -69,7 +69,7 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: ./
+                path: /sampleapp22/
           - name : List files
             run: ls -R
 
