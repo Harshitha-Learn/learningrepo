@@ -15,6 +15,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+     
 
     steps:
       # Checkout the repo
@@ -30,10 +31,23 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
-      
+     
       # Run dotnet build and publish
       - name: dotnet build 
         run: |
           dotnet restore
-          dotnet build **/*.csproj --configuration Release
-       
+          dotnet build  --configuration Release
+        working-directory: sampleapp11
+
+      - name: dotnet  publish
+        run: |
+         
+          dotnet publish --configuration release --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        working-directory: sampleapp11 
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v1.0.0
+        with:
+            name: webapp
+            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  
