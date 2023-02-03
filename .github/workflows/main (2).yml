@@ -32,6 +32,6 @@ jobs:
       - name: dotnet build and publish
         run: |
           dotnet restore
-          dotnet build ./sampleapp11/sampleapp11/sampleapp11.csproj --configuration Release
-          dotnet publish ./sampleapp11/sampleapp11/sampleapp11.csproj -c Release 
+          dotnet build ~/sampleapp11/sampleapp11/sampleapp11.csproj --configuration Release
+          dotnet publish ~//sampleapp11/sampleapp11/sampleapp11.csproj -c Release 
         
