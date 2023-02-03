@@ -57,4 +57,4 @@ jobs:
         uses: actions/upload-artifact@v1.0.0
         with:
             name: webapp1
-            path: ./sampleapp22/release
+            path: ./sampleapp22/Release
