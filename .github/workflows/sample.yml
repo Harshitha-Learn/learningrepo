@@ -1,0 +1,28 @@
+
+name: sample
+
+on:  
+  workflow_dispatch:
+  push:
+   branches: [ "main" ]
+ 
+  
+env:
+ 
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:    
+    - uses: actions/checkout@v3
+
+    - name: 'Az login'
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDS}}
+
+    - name: 'set sub'
+      run: |
+         az account set --subscription ${{env.AZURE_SUB_ID}}
