@@ -1,4 +1,4 @@
-name: sample
+name: test checkout
 
 on:  
   workflow_dispatch:
