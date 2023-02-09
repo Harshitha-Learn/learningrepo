@@ -57,7 +57,19 @@ jobs:
        needs: build
        environment: Dev
        steps:
+           # Checkout the repo
          
+    
+          - name: 'Az login'
+            uses: azure/login@v1
+            with:
+                creds: ${{secrets.AZURE_CREDS}}
+          
+          - uses: actions/download-artifact@v3
+            with:
+                name: webapp1
+                path: ./sampleapp11/
+          
 
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
