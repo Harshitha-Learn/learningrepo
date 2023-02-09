@@ -15,5 +15,5 @@ jobs:
     - name: List var
       run: |
          echo $GITHUB_SHA
-         ECHO $GITHUB_REPOSITORY
+         echo $GITHUB_REPOSITORY
          ls test.txt
