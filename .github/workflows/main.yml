@@ -58,7 +58,7 @@ jobs:
     environment: Dev
     steps:
      # Checkout code
-    - uses: actions/checkout@main
+    #- uses: actions/checkout@main
 
     
     - name: 'Az login'
