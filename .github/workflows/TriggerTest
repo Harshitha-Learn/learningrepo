@@ -1,0 +1,27 @@
+name: Schedule Test deploy nightly
+
+on:
+
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 3 * * *'
+  workflow_dispatch:
+ #  inputs:
+  #    env:
+  #      required: true
+  #      type: string
+  #      default: 'Dev'
+
+env:
+ Environment: Dev
+
+jobs:
+ call-cicdflow:
+   # runs-on: ubuntu-latest
+    uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
+    with:
+      env: Test
+    secrets: inherit
+   
+  
+   
