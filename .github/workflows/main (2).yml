@@ -8,7 +8,8 @@ on:
    
 
 env:
-  AZURE_WEBAPP_NAME: b1webapp    # set this to your application's namei
+  AZURE_WEBAPP_NAME: b1webapp 
+  AZURE_WEBAPP_NAME_test: b2webapp  # set this to your application's namei
  # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
 
@@ -77,3 +78,29 @@ jobs:
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
                   package: ./sampleapp11/
+
+
+  deploy_on_test:
+       runs-on: ubuntu-latest
+       needs: [build, deploy_on_dev]
+       environment: Test
+       steps:
+           # Checkout the repo
+         
+    
+          - name: 'Az login'
+            uses: azure/login@v1
+            with:
+                creds: ${{secrets.AZURE_CREDS}}
+          
+          - uses: actions/download-artifact@v3
+            with:
+                name: webapp1
+                path: ./sampleapp12/
+          
+
+          - name: 'Run Azure webapp deploy action '
+            uses: azure/webapps-deploy@v2
+            with: 
+                  app-name: ${{ env.AZURE_WEBAPP_NAME_test }} # Replace with your app name
+                  package: ./sampleapp12/
