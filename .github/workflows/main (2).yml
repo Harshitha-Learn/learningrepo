@@ -65,7 +65,7 @@ jobs:
   
   deploy_on_dev:
      #  if: github.event.inputs.env == 'Dev' 
-       if: ${{ github.event.inputs.environment == 'Dev'  || inputs.environment == 'Dev' }}
+       if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
        runs-on: ubuntu-latest
        needs: build
        environment: Dev
@@ -92,7 +92,7 @@ jobs:
 
 
   deploy_on_test:
-       if: ${{ github.event.inputs.environment == 'Test'  || inputs.environment == 'Test' }}
+       if: ${{ github.event.inputs.env == 'Test'  || inputs.env == 'Test' }}
       # if: github.event.inputs.env == 'Test' 
        runs-on: ubuntu-latest
        needs: build
