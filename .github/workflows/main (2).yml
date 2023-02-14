@@ -3,6 +3,11 @@ name: .NET Core CI
 on:
   push:
     branches: [ "main" ]
+  workflow_call:
+   inputs:
+      env:
+        required: true
+        type: string
   workflow_dispatch:
    inputs:
       env:
