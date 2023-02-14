@@ -1,0 +1,52 @@
+name: .NET Core CI
+
+on:  
+  workflow_dispatch: 
+  push:
+     branches: [ "main" ]
+  pull_request:
+     branches: [ "main" ]
+
+    
+
+env:
+  AZURE_WEBAPP_NAME: b1webapp 
+  AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
+ # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+     
+
+    steps:
+      # Checkout the repo
+      - uses: actions/checkout@main
+     
+      # Setup .NET Core SDK
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }} 
+     
+      # Run dotnet build and publish
+      - name: dotnet build 
+        run: |
+          dotnet restore
+          dotnet build  --configuration Release
+        working-directory: sampleapp11
+
+      - name: dotnet  publish
+        run: |
+         
+          dotnet publish  --configuration Release --output Release
+        working-directory: sampleapp11/webapp1/
+
+
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+            name: webapp1
+            path: ./sampleapp11/webapp1/Release
