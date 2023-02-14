@@ -17,7 +17,7 @@ on:
    
 
 env:
-  AZURE_WEBAPP_NAME: b2webapp 
+  AZURE_WEBAPP_NAME: b1webapp 
   AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
  # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
@@ -42,7 +42,7 @@ jobs:
             uses: dawidd6/action-download-artifact@v2
             with:
                workflow: buildci.yml
-               name: webapp1    
+              # name: webapp1    
                path: ./sampleappArtifacts/
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
