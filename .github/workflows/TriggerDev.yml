@@ -21,6 +21,7 @@ jobs:
     uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
     with:
       env: 'Dev'
+    secrets: inherit
    
   
    
