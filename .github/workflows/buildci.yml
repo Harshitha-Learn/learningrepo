@@ -14,7 +14,7 @@ env:
   AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
  # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
-  RUN_ID: ${{ github.run_id }}
+ # RUN_ID: ${{ github.run_id }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -48,5 +48,5 @@ jobs:
       - name: Publish Artifacts
         uses: actions/upload-artifact@v3
         with:
-            name: webapp1_${{ github.run_id }}
+            name: webapp1
             path: ./sampleapp11/webapp1/Release
