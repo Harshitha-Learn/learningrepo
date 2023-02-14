@@ -20,7 +20,8 @@ jobs:
    # runs-on: ubuntu-latest
     uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
     with:
-      env: 'Dev'
+      env: Dev
+    secrets: inherit
    
   
    
