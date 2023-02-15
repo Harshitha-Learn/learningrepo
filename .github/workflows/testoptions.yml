@@ -14,3 +14,18 @@ on:
           - Dev
           - Test
           - Prod
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:    
+     
+    - name: List var
+      run: |
+         echo $GITHUB_SHA
+         echo $GITHUB_REPOSITORY
+         echo ${{inputs.env}}
+         
