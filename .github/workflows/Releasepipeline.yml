@@ -5,7 +5,7 @@ on:
   workflow_call:
    inputs:      
       env:
-        type: environment
+        type: string
         description: Select the environment
    
 
@@ -17,14 +17,14 @@ env:
 
 jobs:
   #build:
-    call-build:
-   # runs-on: ubuntu-latest
-    uses: Harshitha-Learn/learningrepo/.github/workflows/buildci.yml@main
+  build:
+    # runs-on: ubuntu-latest
+    uses: ./.github/workflows/buildci.yml
     with:
       env: ${{ inputs.environment }}
     secrets: inherit
   
-  
+         
   deploy_on_dev:
      #  if: github.event.inputs.env == 'Dev' 
        if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
@@ -33,7 +33,11 @@ jobs:
        environment: Dev
        steps:
            # Checkout the repo
-         
+          - name: List var
+            run: |
+             echo $GITHUB_SHA
+             echo $GITHUB_REPOSITORY
+             echo $GITHUB_REF
     
           - name: 'Az login'
             uses: azure/login@v1
@@ -61,7 +65,12 @@ jobs:
        environment: Test
        steps:
            # Checkout the repo
-         
+          - name: List var
+            run: |
+             echo $GITHUB_SHA
+             echo $GITHUB_REPOSITORY
+             echo $GITHUB_REF
+             
     
           - name: 'Az login'
             uses: azure/login@v1
