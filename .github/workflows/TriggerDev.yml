@@ -4,7 +4,7 @@ on:
 
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '30 2 * * *'
+    - cron:  '00 13 * * *'
   workflow_dispatch:
    inputs:
      environment:
@@ -16,7 +16,8 @@ jobs:
    # runs-on: ubuntu-latest
     uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
     with:
-      env: ${{ inputs.environment }}
+    #  env: ${{ inputs.environment }}
+      env: Dev
     secrets: inherit
    
   
