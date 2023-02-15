@@ -14,7 +14,7 @@ on:
         description: Make a choice
         options:
         - main
-        - release
+        - releases-2.0
       
 jobs:
   build:
