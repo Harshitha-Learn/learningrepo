@@ -13,15 +13,18 @@ on:
         type: choice
         description: Make a choice
         options:
-        - foo
-        - bar
-        - baz
+        - main
+        - release
+      
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.choice }}
+        
 
       - name: greet
         run: | 
