@@ -1,31 +1,30 @@
 name: testoptions
 
 on:
-
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '30 2 * * *'
   workflow_dispatch:
     inputs:
       environment:
-        required: true
-        type: string        
+        type: environment
+        description: Select the environment
+      boolean:
+        type: boolean
+        description: True or False
+      choice:
+        type: choice
+        description: Make a choice
         options:
-          - Dev
-          - Test
-          - Prod
-
-
+        - foo
+        - bar
+        - baz
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
-    steps:    
-     
-    - name: List var
-      run: |
-         echo $GITHUB_SHA
-         echo $GITHUB_REPOSITORY
-         echo ${{inputs.env}}
-         
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: greet
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }} / ${{ inputs.environment }}"
+          echo "boolean is ${{ github.event.inputs.boolean }}" / ${{ inputs.boolean }} 
+          echo "choice is ${{ github.event.inputs.choice }}" / ${{ inputs.choice }}
