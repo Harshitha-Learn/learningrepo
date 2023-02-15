@@ -6,7 +6,7 @@ on:
      branches: [ "main", "releases-*" ]
   pull_request:
      branches: [ "main",  "releases-*" ]
-
+  workflow_call:
     
 
 env:
