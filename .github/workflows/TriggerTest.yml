@@ -18,7 +18,7 @@ env:
 jobs:
  call-cicdflow:
    # runs-on: ubuntu-latest
-    uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@releases-2.0
+    uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@releases-2.0
     with:
       env: Test
     secrets: inherit
