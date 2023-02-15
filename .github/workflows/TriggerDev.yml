@@ -14,7 +14,7 @@ on:
 jobs:
  call-cicdflow:
    # runs-on: ubuntu-latest
-    uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
+    uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@main
     with:
     #  env: ${{ inputs.environment }}
       env: Dev
