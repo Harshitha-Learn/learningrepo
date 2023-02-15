@@ -1,0 +1,52 @@
+name: Downloadart
+
+on:
+  #push:
+   # branches: [ "main" ]
+  workflow_call:
+   inputs:
+      env:
+        required: true
+        type: string
+  workflow_dispatch:
+   inputs:
+      env:
+        required: false
+        type: string
+    
+   
+
+env:
+  AZURE_WEBAPP_NAME: b1webapp 
+  AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
+ # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
+
+jobs:
+ 
+ deploy_on_dev:
+     #  if: github.event.inputs.env == 'Dev' 
+     #  if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
+       runs-on: ubuntu-latest
+      # needs: build
+       environment: Dev
+       steps:
+           # Checkout the repo
+             
+          - name: 'Az login'
+            uses: azure/login@v1
+            with:
+                creds: ${{secrets.AZURE_CREDS}}
+          - name: Download artifact
+            id: download-artifact
+            uses: dawidd6/action-download-artifact@v2
+            with:
+               workflow: buildci.yml
+               name: webapp1 
+               branch: main
+               path: ./sampleappArtifacts/
+          - name: 'Run Azure webapp deploy action '
+            uses: azure/webapps-deploy@v2
+            with: 
+                  app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+                  package: ./sampleappArtifacts/
