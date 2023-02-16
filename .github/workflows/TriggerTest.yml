@@ -16,12 +16,19 @@ env:
  Environment: Dev
 
 jobs:
- call-cicdflow:
+ workflowcall-api-trigger:
+    runs-on: ubuntu-latest
+    steps:
+    - name: REST API with curl
+      run: |
+        curl \
+     #   curl -X GET "https://example.com/api/v2/endpoint"
+# call-cicdflow:
    # runs-on: ubuntu-latest
-    uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@releases-2.0
-    with:
-      env: Test
-    secrets: inherit
+  #  uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@releases-2.0
+   # with:
+  #    env: Test
+  #  secrets: inherit
    
   
    
