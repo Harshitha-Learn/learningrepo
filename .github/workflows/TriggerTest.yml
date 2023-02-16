@@ -22,7 +22,7 @@ jobs:
     - name: REST API with curl
       run: |
         curl \
-     #   curl -X GET "https://example.com/api/v2/endpoint"
+        curl -X GET "https://example.com/api/v2/endpoint"
 # call-cicdflow:
    # runs-on: ubuntu-latest
   #  uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@releases-2.0
