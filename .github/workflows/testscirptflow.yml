@@ -13,7 +13,7 @@ env:
 
 jobs:
   Build:
-    uses: ./.github/workflows/coromant-ccm-build.yml   
+    uses: ./.github/workflows/buildci.yml 
     secrets: inherit
   
  # if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
