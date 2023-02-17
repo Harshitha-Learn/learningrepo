@@ -1,0 +1,26 @@
+name: Test deploy
+
+on:
+
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '05 14 * * *'
+  workflow_dispatch:
+   inputs:
+     environment:
+        type: environment
+        description: Select the environment
+
+jobs:
+ call-cicdflow:
+   # runs-on: ubuntu-latest
+   # uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@main
+    uses: Harshitha-Learn/learningrepo/.github/workflows/testscirptflow.yml@releases-2.0
+    with:
+    #  env: ${{ inputs.environment }}
+     # env: Dev
+     Environment: Test
+    secrets: inherit
+   
+  
+   
