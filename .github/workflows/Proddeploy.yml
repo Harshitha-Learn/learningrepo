@@ -1,0 +1,20 @@
+name: Prod deploy
+
+on:
+
+  workflow_dispatch:
+   
+
+jobs:
+ call-cicdflow:
+   # runs-on: ubuntu-latest
+   # uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@main
+    uses: Harshitha-Learn/learningrepo/.github/workflows/testscirptflow.yml@releases-2.0
+    with:
+    #  env: ${{ inputs.environment }}
+     # env: Dev
+     Environment: Prod
+    secrets: inherit
+   
+  
+   
