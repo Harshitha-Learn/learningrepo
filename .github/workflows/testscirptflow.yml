@@ -52,7 +52,7 @@ jobs:
              
   Prod_Deploy:
      #  if: github.event.inputs.env == 'Dev' 
-     if: ${{ github.event.inputs.env == 'Prod'  || inputs.env == 'Prod' }}
+       if: ${{ github.event.inputs.env == 'Prod'  || inputs.env == 'Prod' }}
        runs-on: ubuntu-latest
        needs: Build
        environment: Prod
