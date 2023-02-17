@@ -19,7 +19,7 @@ jobs:
  # if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
   Dev_Deploy:
      #  if: github.event.inputs.env == 'Dev' 
-       if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
+       if: ${{ github.event.inputs.Environment == 'Dev'  || inputs.Environment == 'Dev' }}
        runs-on: ubuntu-latest
        needs: Build
        environment: Dev
@@ -35,7 +35,7 @@ jobs:
              
   Test_Deploy:
      #  if: github.event.inputs.env == 'Dev' 
-       if: ${{ github.event.inputs.env == 'Test'  || inputs.env == 'Test' }}
+       if: ${{ github.event.inputs.Environment == 'Test'  || inputs.Environment == 'Test' }}
        runs-on: ubuntu-latest
        needs: Build
        environment: Test
@@ -52,7 +52,7 @@ jobs:
              
   Prod_Deploy:
      #  if: github.event.inputs.env == 'Dev' 
-       if: ${{ github.event.inputs.env == 'Prod'  || inputs.env == 'Prod' }}
+       if: ${{ github.event.inputs.Environment == 'Prod'  || inputs.Environment == 'Prod' }}
        runs-on: ubuntu-latest
        needs: Build
        environment: Prod
