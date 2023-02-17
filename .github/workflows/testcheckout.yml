@@ -15,7 +15,7 @@ jobs:
     - name: scirpt pwsh
       shell: pwsh
       run: |
-             Get-ChildItem -Path ./home/runner/work/learningrepo/learningrepo
+             Get-ChildItem -Path ./
                
     - name: List var
       run: |
