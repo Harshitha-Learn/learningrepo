@@ -15,7 +15,7 @@ jobs:
     - name: scirpt pwsh
       shell: pwsh
       run: |
-             Get-ChildItem -Path ./
+            ls ./
                
     - name: List var
       run: |
