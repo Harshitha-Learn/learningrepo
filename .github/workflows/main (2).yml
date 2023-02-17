@@ -94,13 +94,13 @@ jobs:
           - name: scirpt pwsh
             shell: pwsh
             run: |
-               ls ./sampleapp113/
+               ls ./sampleapp113/webapp1
                
               # Get-ChildItem -Path ./sampleapp11
           - name: scirpt pwsh
             shell: pwsh
             run: |
-               Expand-Archive -Path ./sampleapp113/webapp1.zip -DestinationPath ./sampleapp11/unzip/
+               Expand-Archive -Path ./sampleapp113/webapp1 -DestinationPath ./sampleapp114/unzip/
             
 
           - name: 'Run Azure webapp deploy action '
