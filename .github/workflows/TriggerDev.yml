@@ -4,23 +4,22 @@ on:
 
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '30 2 * * *'
+    - cron:  '05 14 * * *'
   workflow_dispatch:
- #  inputs:
-  #    env:
-  #      required: true
-  #      type: string
-  #      default: 'Dev'
-
-env:
- Environment: Dev
+   inputs:
+     environment:
+        type: environment
+        description: Select the environment
 
 jobs:
  call-cicdflow:
    # runs-on: ubuntu-latest
-    uses: Harshitha-Learn/learningrepo/.github/workflows/main (2).yml@main
+   # uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@main
+    uses: Harshitha-Learn/learningrepo/.github/workflows/testscirptflow.yml@main
     with:
-      env: Dev
+    #  env: ${{ inputs.environment }}
+     # env: Dev
+     Environment: Dev
     secrets: inherit
    
   
