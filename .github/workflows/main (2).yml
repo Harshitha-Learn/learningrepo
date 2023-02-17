@@ -90,14 +90,19 @@ jobs:
             with:
                # name: webapp1
                 path: ./sampleapp11/
-          
+          - name: Build
+            shell: pwsh
+            run: |
+               Expand-Archive -Path ./sampleapp11/webapp1.zip -DestinationPath ./sampleapp11/unzip/
+            
 
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
                   package: ./sampleapp11/
-
+                  
+          
 
   deploy_on_test:
        if: ${{ github.event.inputs.env == 'Test'  || inputs.env == 'Test' }}
