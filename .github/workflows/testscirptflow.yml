@@ -1,5 +1,5 @@
 
-name:  Coromant CCM Release
+name:  testscirptflow
 
 on:  
   workflow_call:
