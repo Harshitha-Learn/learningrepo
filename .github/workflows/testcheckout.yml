@@ -12,6 +12,11 @@ jobs:
     steps:    
     - uses: actions/checkout@v3
     
+    - name: scirpt pwsh
+      shell: pwsh
+      run: |
+             Get-ChildItem -Path ./home/runner/work/learningrepo/learningrepo
+               
     - name: List var
       run: |
          echo $GITHUB_SHA
