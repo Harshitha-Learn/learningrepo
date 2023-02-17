@@ -5,7 +5,8 @@ on:
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '05 14 * * *'
-  
+  workflow_dispatch:
+   
 
 jobs:
  call-cicdflow:
