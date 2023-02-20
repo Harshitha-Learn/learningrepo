@@ -94,7 +94,8 @@ jobs:
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
                   package: ./sampleapp113/
                   slot-name: staging
-          - name: 'Create slot'
+                  
+          - name: 'Swap staging with Production slot'
             run: |
                   az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
           
