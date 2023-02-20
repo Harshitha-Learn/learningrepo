@@ -97,9 +97,9 @@ jobs:
                   
           - name: 'Swap staging with Production slot'
             run: |
-                  az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot productionz
+                  az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
          
           - name: 'Delete staging slot'
             run: |     
-                 az webapp deployment slot delete --name MyWebapp --resource-group MyResourceGroup --slot staging
+                 az webapp deployment slot delete --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group rg-new --slot staging
           
