@@ -63,17 +63,10 @@ jobs:
             name: webapp1
             path: ./sampleapp11/webapp1/Release
             
-        
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-            name: webapp2
-            path: ./sampleapp11/webapp1/Release
   
   deploy_on_dev:
      #  if: github.event.inputs.env == 'Dev' 
-       if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
+     #  if: ${{ github.event.inputs.env == 'Dev'  || inputs.env == 'Dev' }}
        runs-on: ubuntu-latest
        needs: build
        environment: Dev
@@ -88,52 +81,20 @@ jobs:
           
           - uses: actions/download-artifact@v3
             with:
-               # name: webapp1
+                name: webapp1
                 path: ./sampleapp113/
                 
-          - name: scirpt pwsh
-            shell: pwsh
+          - name: 'Create slot'
             run: |
-               ls ./sampleapp113/webapp1
+               az webapp deployment slot create --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group rg-new --slot staging
                
-              # Get-ChildItem -Path ./sampleapp11
-          - name: scirpt pwsh
-            shell: pwsh
-            run: |
-               Expand-Archive -Path ./sampleapp113/webapp1 -DestinationPath ./sampleapp114/unzip/
-            
-
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-                  package: ./sampleapp11/
-                  
+                  package: ./sampleapp113/
+                  slot-name: staging
+          - name: 'Create slot'
+            run: |
+                  az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
           
-
-  deploy_on_test:
-       if: ${{ github.event.inputs.env == 'Test'  || inputs.env == 'Test' }}
-      # if: github.event.inputs.env == 'Test' 
-       runs-on: ubuntu-latest
-       needs: build
-       environment: Test
-       steps:
-           # Checkout the repo
-         
-    
-          - name: 'Az login'
-            uses: azure/login@v1
-            with:
-                creds: ${{secrets.AZURE_CREDS}}
-          
-          - uses: actions/download-artifact@v3
-            with:
-                name: webapp1
-                path: ./sampleapp12/
-          
-
-          - name: 'Run Azure webapp deploy action '
-            uses: azure/webapps-deploy@v2
-            with: 
-                  app-name: ${{ env.AZURE_WEBAPP_NAME_test }} # Replace with your app name
-                  package: ./sampleapp12/
