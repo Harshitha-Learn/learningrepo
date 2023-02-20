@@ -84,11 +84,11 @@ jobs:
                 name: webapp1
                 path: ./sampleapp113/
                 
-          - name: 'Create slot'
+          - name: 'Create staging slot'
             run: |
                az webapp deployment slot create --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group rg-new --slot staging
                
-          - name: 'Run Azure webapp deploy action '
+          - name: 'Deploy webapp to staging slot '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
@@ -97,5 +97,9 @@ jobs:
                   
           - name: 'Swap staging with Production slot'
             run: |
-                  az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot production
+                  az webapp deployment slot swap  -g rg-new -n ${{ env.AZURE_WEBAPP_NAME }} --slot staging --target-slot productionz
+         
+          - name: 'Delete staging slot'
+            run: |     
+                 az webapp deployment slot delete --name MyWebapp --resource-group MyResourceGroup --slot staging
           
