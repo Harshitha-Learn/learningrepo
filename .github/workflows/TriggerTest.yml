@@ -22,8 +22,12 @@ jobs:
     steps:
         - name: REST API with curl
           run: |      
-            curl -X POST "https://api.github.com/repos/Harshitha-Learn/learningrepo/actions/workflows/Releasepipeline/dispatches"
-             
+            
+             curl -X POST "https://api.github.com/repos/Harshitha-Learn/learningrepo/actions/workflows/Releasepipeline/dispatches"
+                      -H "Accept: application/vnd.github+json" \ 
+                      -H "Authorization: token ${{secrets.Token_pat}} "\
+                      -H "X-GitHub-Api-Version: 2022-11-28" \
+                      -d '{"ref":"main","inputs":{"env":"Dev"}}'
    # runs-on: ubuntu-latest
   #  uses: Harshitha-Learn/learningrepo/.github/workflows/Releasepipeline.yml@releases-2.0
    # with:
