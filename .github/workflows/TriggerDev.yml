@@ -2,9 +2,9 @@ name: Schedule Dev deploy nightly
 
 on:
 
-  schedule:
+#  schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '05 14 * * *'
+   # - cron:  '05 14 * * *'
   workflow_dispatch:
    inputs:
      environment:
