@@ -2,6 +2,7 @@ name: Releasepipeline
 on:
   #push:
    # branches: [ "main" ]
+  workflow_dispatch:
   workflow_call:
    inputs:      
       env:
