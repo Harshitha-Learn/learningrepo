@@ -51,14 +51,14 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: ./sampleapp11/
+                path: ./sampleapp11/Dev_${{github.run_number}}/
           
 
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-                  package: ./sampleapp11/
+                  package: ./sampleapp11/Dev_${{github.run_number}}/
 
 
   deploy_on_test:
@@ -85,11 +85,11 @@ jobs:
           - uses: actions/download-artifact@v3
             with:
                 name: webapp1
-                path: ./sampleapp12/Dev_${{github.run_number}}/
+                path: ./sampleapp12/
           
 
           - name: 'Run Azure webapp deploy action '
             uses: azure/webapps-deploy@v2
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME_test }} # Replace with your app name
-                  package: ./sampleapp12/Dev_${{github.run_number}}
+                  package: ./sampleapp12/
