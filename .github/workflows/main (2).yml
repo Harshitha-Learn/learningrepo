@@ -86,7 +86,7 @@ jobs:
                 
           - name: 'Create staging slot'
             run: |
-               az webapp deployment slot create --name ${{ vars.AZURE_WEBAPP_NAME }} --resource-group rg-new --slot staging
+               az webapp deployment slot create --name ${{ vars.AZURE_WEBAPP_NAME }} --resource-group rg-new --slot staging --configuration-source ${{ vars.AZURE_WEBAPP_NAME }} 
                
           - name: 'Deploy webapp to staging slot '
             uses: azure/webapps-deploy@v2
