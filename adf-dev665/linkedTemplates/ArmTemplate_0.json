@@ -1,0 +1,583 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-dev665"
+		},
+		"adls_ls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stg1devtesti.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage972_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
+		},
+		"AzureDataLakeStorage972_properties_groupId": {
+			"type": "string",
+			"defaultValue": "dfs"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/adls_ls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('adls_ls_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1input')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adls_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Testdatajson.json",
+						"fileSystem": "input"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CRM Company ID": {
+							"type": "string"
+						},
+						"Account Group": {
+							"type": "string"
+						},
+						"Sales Cluster / Sales Office": {
+							"type": "string"
+						},
+						"Sales Region / Sales Group": {
+							"type": "string"
+						},
+						"Company Status": {
+							"type": "string"
+						},
+						"Key Account Type": {
+							"type": "string"
+						},
+						"Key Account Name": {
+							"type": "string"
+						},
+						"Key Account Manager": {
+							"type": "string"
+						},
+						"Customer Lifecycle": {
+							"type": "string"
+						},
+						"Number of Machines": {
+							"type": "string"
+						},
+						"Sales Area": {
+							"type": "string"
+						},
+						"WebCreatedCustomer": {
+							"type": "string"
+						},
+						"Company Market": {
+							"type": "string"
+						},
+						"Distributor Level": {
+							"type": "string"
+						},
+						"Number Of Employees": {
+							"type": "string"
+						},
+						"Address 1: City": {
+							"type": "string"
+						},
+						"Address: ZIP/Postal Code": {
+							"type": "string"
+						},
+						"Address: State/Province": {
+							"type": "string"
+						},
+						"Account Owner Email Address": {
+							"type": "string"
+						},
+						"Company Name": {
+							"type": "string"
+						},
+						"Account Owner Last Name": {
+							"type": "string"
+						},
+						"Account Owner First Name": {
+							"type": "string"
+						},
+						"Company Industry Sub Segment 2": {
+							"type": "array"
+						},
+						"Company Industry Sub Segment": {
+							"type": "array"
+						},
+						"Company Industry Segment": {
+							"type": "array"
+						},
+						"Company Customer Type": {
+							"type": "string"
+						},
+						"Company Country": {
+							"type": "string"
+						},
+						"Company Account Development Strategy": {
+							"type": "string"
+						},
+						"Company EBP Code": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adls_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csvip')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "adls_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Testdata.csv",
+						"fileSystem": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "CRMCompanyID",
+						"type": "String"
+					},
+					{
+						"name": "AccountGroup",
+						"type": "String"
+					},
+					{
+						"name": "SalesClusterSalesOffice",
+						"type": "String"
+					},
+					{
+						"name": "SalesRegionSalesGroup",
+						"type": "String"
+					},
+					{
+						"name": "CompanyStatus",
+						"type": "String"
+					},
+					{
+						"name": "KeyAccountType",
+						"type": "String"
+					},
+					{
+						"name": "KeyAccountName",
+						"type": "String"
+					},
+					{
+						"name": "KeyAccountManager",
+						"type": "String"
+					},
+					{
+						"name": "CustomerLifecycle",
+						"type": "String"
+					},
+					{
+						"name": "NumberofMachines",
+						"type": "String"
+					},
+					{
+						"name": "SalesArea",
+						"type": "String"
+					},
+					{
+						"name": "WebCreatedCustomer",
+						"type": "String"
+					},
+					{
+						"name": "CompanyMarket",
+						"type": "String"
+					},
+					{
+						"name": "DistributorLevel",
+						"type": "String"
+					},
+					{
+						"name": "NumberOfEmployees",
+						"type": "String"
+					},
+					{
+						"name": "Address1City",
+						"type": "String"
+					},
+					{
+						"name": "AddressZIPPostalCode",
+						"type": "String"
+					},
+					{
+						"name": "AddressStateProvince",
+						"type": "String"
+					},
+					{
+						"name": "AccountOwnerEmailAddress",
+						"type": "String"
+					},
+					{
+						"name": "CompanyName",
+						"type": "String"
+					},
+					{
+						"name": "AccountOwnerLastName",
+						"type": "String"
+					},
+					{
+						"name": "AccountOwnerFirstName",
+						"type": "String"
+					},
+					{
+						"name": "CompanyIndustrySubSegment2",
+						"type": "String"
+					},
+					{
+						"name": "CompanyIndustrySubSegment",
+						"type": "String"
+					},
+					{
+						"name": "CompanyIndustrySegment",
+						"type": "String"
+					},
+					{
+						"name": "CompanyCustomerType",
+						"type": "String"
+					},
+					{
+						"name": "CompanyCountry",
+						"type": "String"
+					},
+					{
+						"name": "CompanyAccountDevelopmentStrategy",
+						"type": "String"
+					},
+					{
+						"name": "CompanyEBPCode",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/adls_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureMVNIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "West Europe",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false
+						},
+						"pipelineExternalComputeScaleProperties": {
+							"timeToLive": 60
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/AzureDataLakeStorage972')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('AzureDataLakeStorage972_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('AzureDataLakeStorage972_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set TEST",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TEST",
+										"value": {
+											"value": "@item().CRMCompanyID",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Web1",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "https://reqres.in/api/users",
+										"method": "POST",
+										"headers": {},
+										"body": {
+											"value": "{\n    \"name\": @{concat('\"',item().CRMCompanyID,'\"')},\n    \"job\": \"leader1\"\n}\n",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "csvip",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"TEST": {
+						"type": "String"
+					},
+					"test1": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-23T14:38:51Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/csvip')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "Json1input",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Set test",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "test1",
+										"value": {
+											"value": "@item().WebCreatedCustomer",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Web1",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Set test",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "https://reqres.in/api/users",
+										"method": "POST",
+										"headers": {},
+										"body": {
+											"value": "{\n    \"name\": @{concat('\"',item().WebCreatedCustomer,'\"')},\n    \"job\": \"leader1\"\n}\n",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"test1": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-02-23T14:41:24Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1input')]"
+			]
+		}
+	]
+}
