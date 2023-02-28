@@ -5,12 +5,12 @@ on:
   workflow_dispatch:
    inputs:      
       env:
-        type: string
+        type: environment
         description: Select the environment
   workflow_call:
    inputs:      
       env:
-        type: environment
+        type: string
         description: Select the environment
    
 
