@@ -6,7 +6,7 @@ on:
      branches: [ "main", "releases-*" ]
      paths-ignore:
       - 'docs/**'
-      - 'ADF'
+      - 'ADF/**'
   pull_request:
      branches: [ "main",  "releases-*" ]
   workflow_call:
