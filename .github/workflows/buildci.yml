@@ -4,6 +4,9 @@ on:
   workflow_dispatch: 
   push:
      branches: [ "main", "releases-*" ]
+     paths-ignore:
+      - 'docs/**'
+      - 'ADF'
   pull_request:
      branches: [ "main",  "releases-*" ]
   workflow_call:
