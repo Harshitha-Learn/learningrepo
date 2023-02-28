@@ -16,6 +16,7 @@ permissions: write-all
 
 env: 
  ref-branch: 'main' #change this to release branch name
+ workflow_name: Releasepipeline.yml
 
 
 jobs:
@@ -24,7 +25,7 @@ jobs:
     steps:
         - name: REST API with curl
           run: | 
-               curl -X POST "https://api.github.com/repos/Harshitha-Learn/learningrepo/actions/workflows/Releasepipeline.yml/dispatches" -H "Accept: application/vnd.github+json" -H "Authorization: token ${{secrets.Token_pat}} " -H "X-GitHub-Api-Version: 2022-11-28" -d '{"ref": "${{ env.ref-branch }}","inputs":{"env":"Dev"}}'
+               curl -X POST "https://api.github.com/repos/Harshitha-Learn/learningrepo/actions/workflows/${{ env.workflow_name }}/dispatches" -H "Accept: application/vnd.github+json" -H "Authorization: token ${{secrets.Token_pat}} " -H "X-GitHub-Api-Version: 2022-11-28" -d '{"ref": "${{ env.ref-branch }}","inputs":{"env":"Dev"}}'
             
             
    # runs-on: ubuntu-latest
