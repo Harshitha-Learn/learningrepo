@@ -2,6 +2,9 @@
 	"name": "managedpe_storage",
 	"properties": {
 		"privateLinkResourceId": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.Storage/storageAccounts/storage12rest",
-		"groupId": "dfs"
+		"groupId": "dfs",
+		"fqdns": [
+			"storage12rest.dfs.core.windows.net"
+		]
 	}
 }
