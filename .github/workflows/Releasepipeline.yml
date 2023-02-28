@@ -7,11 +7,13 @@ on:
       env:
         type: environment
         description: Select the environment
+        required: true
   workflow_call:
    inputs:      
       env:
         type: string
         description: Select the environment
+        required: true
    
 
 env:
