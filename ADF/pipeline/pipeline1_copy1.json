@@ -90,6 +90,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"Path": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"TEST": {
 				"type": "String"
