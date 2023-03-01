@@ -32,6 +32,10 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     folder as string,",
+				"     filename as string",
+				"}",
 				"source(output(",
 				"          {CRM Company ID} as string,",
 				"          {Account Group} as string,",
