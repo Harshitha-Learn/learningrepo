@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "test-adf-13l"
+		},
+		"testblob1_ls_accountKey": {
+			"value": ""
+		},
+		"adls_ls_properties_typeProperties_url": {
+			"value": "https://stg1devtesti.dfs.core.windows.net/"
+		},
+		"testblob1_ls_properties_typeProperties_url": {
+			"value": "https://storage12rest.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage972_properties_privateLinkResourceId": {
+			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
+		},
+		"AzureDataLakeStorage972_properties_groupId": {
+			"value": "dfs"
+		},
+		"managedpe_storage_properties_privateLinkResourceId": {
+			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/DefaultResourceGroup-WEU/providers/Microsoft.Storage/storageAccounts/storage12rest"
+		},
+		"managedpe_storage_properties_groupId": {
+			"value": "dfs"
+		},
+		"managedpe_storage_properties_fqdns": {
+			"value": [
+				"storage12rest.dfs.core.windows.net"
+			]
+		}
+	}
+}
