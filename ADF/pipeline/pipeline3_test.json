@@ -30,8 +30,8 @@
 				}
 			},
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "ForEach1",
+				"type": "ForEach",
 				"dependsOn": [
 					{
 						"activity": "dataflow1",
@@ -42,19 +42,14 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "Output",
-					"value": {
+					"items": {
 						"value": "@activity('dataflow1').output",
 						"type": "Expression"
-					}
+					},
+					"isSequential": true
 				}
 			}
 		],
-		"variables": {
-			"Output": {
-				"type": "Array"
-			}
-		},
 		"annotations": []
 	}
 }
