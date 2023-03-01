@@ -8,11 +8,11 @@
 		"parameters": {
 			"FolderPathds": {
 				"type": "string",
-				"defaultValue": "$folder"
+				"defaultValue": "input"
 			},
 			"FileNameds": {
 				"type": "string",
-				"defaultValue": "$filename"
+				"defaultValue": "Testdatajson.json"
 			}
 		},
 		"annotations": [],
