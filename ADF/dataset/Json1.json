@@ -18,8 +18,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Testdatajson.json",
-				"fileSystem": "input"
+				"fileName": {
+					"value": "@dataset().FileNameds",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().FolderPathds",
+					"type": "Expression"
+				}
 			}
 		},
 		"schema": {
