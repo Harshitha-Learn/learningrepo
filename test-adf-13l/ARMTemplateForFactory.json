@@ -41,7 +41,7 @@
 		},
 		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
 			"type": "string",
-			"defaultValue": "@triggerbody().filePath"
+			"defaultValue": "@triggerBody().filePath"
 		},
 		"trigger1pipeline1_properties_typeProperties_scope": {
 			"type": "string",
