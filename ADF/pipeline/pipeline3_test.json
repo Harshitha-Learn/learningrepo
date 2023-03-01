@@ -25,8 +25,33 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "dataflow1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Output",
+					"value": {
+						"value": "@activity('dataflow1').output",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"Output": {
+				"type": "Array"
+			}
+		},
 		"annotations": []
 	}
 }
