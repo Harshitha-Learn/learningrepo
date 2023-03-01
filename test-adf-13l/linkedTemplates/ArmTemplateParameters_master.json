@@ -26,10 +26,13 @@
 		"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName": {
 			"value": "@triggerBody().fileName"
 		},
-		"stroagefiletrigger_properties_pipeline1_copy1_parameters_Path": {
-			"value": "@triggerBody().filePath"
-		},
 		"stroagefiletrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
+		},
+		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
+			"value": "@triggerbody().filePath"
+		},
+		"trigger1pipeline1_properties_typeProperties_scope": {
 			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
 		"AzureDataLakeStorage972_properties_privateLinkResourceId": {

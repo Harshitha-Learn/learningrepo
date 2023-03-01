@@ -49,6 +49,14 @@
 				"storage12rest.dfs.core.windows.net"
 			]
 		},
+		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
+			"type": "string",
+			"defaultValue": "@triggerbody().filePath"
+		},
+		"trigger1pipeline1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
+		},
 		"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FolderPath": {
 			"type": "string",
 			"defaultValue": "@triggerBody().folderPath"
@@ -56,10 +64,6 @@
 		"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
-		},
-		"stroagefiletrigger_properties_pipeline1_copy1_parameters_Path": {
-			"type": "string",
-			"defaultValue": "@triggerBody().filePath"
 		},
 		"stroagefiletrigger_properties_typeProperties_scope": {
 			"type": "string",
@@ -1348,6 +1352,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/trigger1pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipeline1_copy1",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"Path": "[parameters('trigger1pipeline1_properties_pipeline1_copy1_parameters_Path')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/input/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger1pipeline1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline1_copy1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/stroagefiletrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -1364,15 +1400,6 @@
 							"FolderPath": "[parameters('stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FolderPath')]",
 							"FileName": "[parameters('stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName')]"
 						}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "pipeline1_copy1",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"Path": "[parameters('stroagefiletrigger_properties_pipeline1_copy1_parameters_Path')]"
-						}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -1387,8 +1414,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline3_test_jsonfileprocess')]",
-				"[concat(variables('factoryId'), '/pipelines/pipeline1_copy1')]"
+				"[concat(variables('factoryId'), '/pipelines/pipeline3_test_jsonfileprocess')]"
 			]
 		}
 	]

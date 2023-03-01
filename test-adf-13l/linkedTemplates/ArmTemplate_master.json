@@ -35,11 +35,15 @@
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
 		},
-		"stroagefiletrigger_properties_pipeline1_copy1_parameters_Path": {
-			"type": "string",
-			"defaultValue": "@triggerBody().filePath"
-		},
 		"stroagefiletrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
+		},
+		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
+			"type": "string",
+			"defaultValue": "@triggerbody().filePath"
+		},
+		"trigger1pipeline1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
@@ -122,14 +126,17 @@
 					"managedpe_storage_properties_fqdns": {
 						"value": "[parameters('managedpe_storage_properties_fqdns')]"
 					},
+					"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
+						"value": "[parameters('trigger1pipeline1_properties_pipeline1_copy1_parameters_Path')]"
+					},
+					"trigger1pipeline1_properties_typeProperties_scope": {
+						"value": "[parameters('trigger1pipeline1_properties_typeProperties_scope')]"
+					},
 					"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FolderPath": {
 						"value": "[parameters('stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FolderPath')]"
 					},
 					"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName": {
 						"value": "[parameters('stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName')]"
-					},
-					"stroagefiletrigger_properties_pipeline1_copy1_parameters_Path": {
-						"value": "[parameters('stroagefiletrigger_properties_pipeline1_copy1_parameters_Path')]"
 					},
 					"stroagefiletrigger_properties_typeProperties_scope": {
 						"value": "[parameters('stroagefiletrigger_properties_typeProperties_scope')]"
