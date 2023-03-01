@@ -33,8 +33,8 @@
 			],
 			"scriptLines": [
 				"parameters{",
-				"     folder as string ($folder),",
-				"     filename as string ($filename)",
+				"     folder as string,",
+				"     filename as string",
 				"}",
 				"source(output(",
 				"          {CRM Company ID} as string,",
