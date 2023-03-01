@@ -5,17 +5,32 @@
 		"factoryName": {
 			"value": "test-adf-13l"
 		},
+		"AzureDataLakeStorage1_ls_accountKey": {
+			"value": ""
+		},
 		"testblob1_ls_accountKey": {
 			"value": ""
 		},
-		"AzureDataLakeStorage1_ls_accountKey": {
-			"value": ""
+		"AzureDataLakeStorage1_ls_properties_typeProperties_url": {
+			"value": "https://stg1devtesti.dfs.core.windows.net/"
 		},
 		"adls_ls_properties_typeProperties_url": {
 			"value": "https://stg1devtesti.dfs.core.windows.net/"
 		},
 		"testblob1_ls_properties_typeProperties_url": {
 			"value": "https://storage12rest.dfs.core.windows.net/"
+		},
+		"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FolderPath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"stroagefiletrigger_properties_pipeline3_test_jsonfileprocess_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"stroagefiletrigger_properties_pipeline1_copy1_parameters_Path": {
+			"value": "@triggerBody().filePath"
+		},
+		"stroagefiletrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
 		"AzureDataLakeStorage972_properties_privateLinkResourceId": {
 			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
@@ -33,12 +48,6 @@
 			"value": [
 				"storage12rest.dfs.core.windows.net"
 			]
-		},
-		"AzureDataLakeStorage1_ls_properties_typeProperties_url": {
-			"value": "https://stg1devtesti.dfs.core.windows.net/"
-		},
-		"stroagefiletrigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
 		"containerUri": {
 			"value": ""
