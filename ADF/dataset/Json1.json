@@ -7,10 +7,12 @@
 		},
 		"parameters": {
 			"FolderPathds": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "$folder"
 			},
 			"FileNameds": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "$filename"
 			}
 		},
 		"annotations": [],
