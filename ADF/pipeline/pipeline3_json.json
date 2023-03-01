@@ -37,102 +37,152 @@
 						}
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
 							{
 								"source": {
 									"path": "$['CRM Company ID']"
-								},
-								"sink": {
-									"path": "$['CRM Company ID']"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Account Group']"
-								},
-								"sink": {
 									"path": "$['Account Group']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Sales Cluster / Sales Office']"
-								},
-								"sink": {
-									"path": "$['Sales Cluster / Sales Office']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Sales Region / Sales Group']"
-								},
-								"sink": {
-									"path": "$['Sales Region / Sales Group']"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Account Owner First Name']"
-								},
-								"sink": {
+									"path": "$['Company Status']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Key Account Type']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Key Account Name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Key Account Manager']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Customer Lifecycle']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Number of Machines']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Sales Area']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['WebCreatedCustomer']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Market']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Distributor Level']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Number Of Employees']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address 1: City']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address: ZIP/Postal Code']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Address: State/Province']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Account Owner Email Address']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Account Owner Last Name']"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Account Owner First Name']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Company Industry Sub Segment 2'][0]"
-								},
-								"sink": {
-									"path": "$['Company Industry Sub Segment 2']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Company Industry Sub Segment'][0]"
-								},
-								"sink": {
-									"path": "$['Company Industry Sub Segment']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Company Industry Segment'][0]"
-								},
-								"sink": {
-									"path": "$['Company Industry Segment']"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Company Customer Type']"
-								},
-								"sink": {
 									"path": "$['Company Customer Type']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Company Country']"
-								},
-								"sink": {
-									"path": "$['Company Country']"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Company Account Development Strategy']"
-								},
-								"sink": {
-									"path": "$['Company Account Development Strategy']"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Company EBP Code']"
-								},
-								"sink": {
 									"path": "$['Company EBP Code']"
 								}
 							}
