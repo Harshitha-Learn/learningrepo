@@ -84,13 +84,37 @@
 					"type": "string"
 				},
 				"Company Industry Sub Segment 2": {
-					"type": "array"
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"SubSegment2": {
+								"type": "string"
+							}
+						}
+					}
 				},
 				"Company Industry Sub Segment": {
-					"type": "array"
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"SubSegment": {
+								"type": "string"
+							}
+						}
+					}
 				},
 				"Company Industry Segment": {
-					"type": "array"
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"Segment": {
+								"type": "string"
+							}
+						}
+					}
 				},
 				"Company Customer Type": {
 					"type": "string"
