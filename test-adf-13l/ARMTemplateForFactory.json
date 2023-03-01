@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'testblob1_ls'"
 		},
+		"AzureDataLakeStorage1_ls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1_ls'"
+		},
 		"adls_ls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stg1devtesti.dfs.core.windows.net/"
@@ -40,6 +44,14 @@
 			"defaultValue": [
 				"storage12rest.dfs.core.windows.net"
 			]
+		},
+		"AzureDataLakeStorage1_ls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stg1devtesti.dfs.core.windows.net/"
+		},
+		"stroagefiletrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		}
 	},
 	"variables": {
@@ -636,6 +648,482 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1_ls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_ls_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_ls_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Testdatajson.json",
+						"fileSystem": "input"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CRM Company ID": {
+							"type": "string"
+						},
+						"Account Group": {
+							"type": "string"
+						},
+						"Sales Cluster / Sales Office": {
+							"type": "string"
+						},
+						"Sales Region / Sales Group": {
+							"type": "string"
+						},
+						"Company Status": {
+							"type": "string"
+						},
+						"Key Account Type": {
+							"type": "string"
+						},
+						"Key Account Name": {
+							"type": "string"
+						},
+						"Key Account Manager": {
+							"type": "string"
+						},
+						"Customer Lifecycle": {
+							"type": "string"
+						},
+						"Number of Machines": {
+							"type": "string"
+						},
+						"Sales Area": {
+							"type": "string"
+						},
+						"WebCreatedCustomer": {
+							"type": "string"
+						},
+						"Company Market": {
+							"type": "string"
+						},
+						"Distributor Level": {
+							"type": "string"
+						},
+						"Number Of Employees": {
+							"type": "string"
+						},
+						"Address 1: City": {
+							"type": "string"
+						},
+						"Address: ZIP/Postal Code": {
+							"type": "string"
+						},
+						"Address: State/Province": {
+							"type": "string"
+						},
+						"Account Owner Email Address": {
+							"type": "string"
+						},
+						"Company Name": {
+							"type": "string"
+						},
+						"Account Owner Last Name": {
+							"type": "string"
+						},
+						"Account Owner First Name": {
+							"type": "string"
+						},
+						"Company Industry Sub Segment 2": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"SubSegment2": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"Company Industry Sub Segment": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"SubSegment": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"Company Industry Segment": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"Segment": {
+										"type": "string"
+									}
+								}
+							}
+						},
+						"Company Customer Type": {
+							"type": "string"
+						},
+						"Company Country": {
+							"type": "string"
+						},
+						"Company Account Development Strategy": {
+							"type": "string"
+						},
+						"Company EBP Code": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "result.json",
+						"fileSystem": "processing"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline3_test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Json1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Json3",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "flatten1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "flatten2"
+						},
+						{
+							"name": "flatten3"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {CRM Company ID} as string,",
+						"          {Account Group} as string,",
+						"          {Sales Cluster / Sales Office} as string,",
+						"          {Sales Region / Sales Group} as string,",
+						"          {Company Status} as string,",
+						"          {Key Account Type} as string,",
+						"          {Key Account Name} as string,",
+						"          {Key Account Manager} as string,",
+						"          {Customer Lifecycle} as string,",
+						"          {Number of Machines} as string,",
+						"          {Sales Area} as string,",
+						"          WebCreatedCustomer as string,",
+						"          {Company Market} as string,",
+						"          {Distributor Level} as string,",
+						"          {Number Of Employees} as string,",
+						"          {Address 1: City} as string,",
+						"          {Address: ZIP/Postal Code} as string,",
+						"          {Address: State/Province} as string,",
+						"          {Account Owner Email Address} as string,",
+						"          {Company Name} as string,",
+						"          {Account Owner Last Name} as string,",
+						"          {Account Owner First Name} as string,",
+						"          {Company Industry Sub Segment 2} as (SubSegment2 as string)[],",
+						"          {Company Industry Sub Segment} as (SubSegment as string)[],",
+						"          {Company Industry Segment} as (Segment as string)[],",
+						"          {Company Customer Type} as string,",
+						"          {Company Country} as string,",
+						"          {Company Account Development Strategy} as string,",
+						"          {Company EBP Code} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'arrayOfDocuments') ~> source1",
+						"derivedColumn1 foldDown(unroll(CompanyIndustrySegment),",
+						"     mapColumn(",
+						"          {CRM Company ID},",
+						"          {Account Group},",
+						"          {Sales Cluster / Sales Office},",
+						"          {Sales Region / Sales Group},",
+						"          {Company Status},",
+						"          {Key Account Type},",
+						"          {Key Account Name},",
+						"          {Key Account Manager},",
+						"          {Customer Lifecycle},",
+						"          {Number of Machines},",
+						"          {Sales Area},",
+						"          WebCreatedCustomer,",
+						"          {Company Market},",
+						"          {Distributor Level},",
+						"          {Number Of Employees},",
+						"          {Address 1: City},",
+						"          {Address: ZIP/Postal Code},",
+						"          {Address: State/Province},",
+						"          {Account Owner Email Address},",
+						"          {Company Name},",
+						"          {Account Owner Last Name},",
+						"          {Account Owner First Name},",
+						"          {Company Customer Type},",
+						"          {Company Country},",
+						"          {Company Account Development Strategy},",
+						"          {Company EBP Code},",
+						"          Segment = CompanyIndustrySegment.Segment,",
+						"          CompanyIndustrySubSegment = CompanyIndustrySubSegment,",
+						"          CompanyIndustrySubsegment2 = CompanyIndustrySubsegment2",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flatten1",
+						"source1 derive(CompanyIndustrySegment = {Company Industry Segment},",
+						"          CompanyIndustrySubSegment = {Company Industry Sub Segment},",
+						"          CompanyIndustrySubsegment2 = {Company Industry Sub Segment 2}) ~> derivedColumn1",
+						"flatten1 foldDown(unroll(CompanyIndustrySubSegment),",
+						"     mapColumn(",
+						"          {CRM Company ID},",
+						"          {Account Group},",
+						"          {Sales Cluster / Sales Office},",
+						"          {Sales Region / Sales Group},",
+						"          {Company Status},",
+						"          {Key Account Type},",
+						"          {Key Account Name},",
+						"          {Key Account Manager},",
+						"          {Customer Lifecycle},",
+						"          {Number of Machines},",
+						"          {Sales Area},",
+						"          WebCreatedCustomer,",
+						"          {Company Market},",
+						"          {Distributor Level},",
+						"          {Number Of Employees},",
+						"          {Address 1: City},",
+						"          {Address: ZIP/Postal Code},",
+						"          {Address: State/Province},",
+						"          {Account Owner Email Address},",
+						"          {Company Name},",
+						"          {Account Owner Last Name},",
+						"          {Account Owner First Name},",
+						"          {Company Customer Type},",
+						"          {Company Country},",
+						"          {Company Account Development Strategy},",
+						"          {Company EBP Code},",
+						"          Segment,",
+						"          SubSegment = CompanyIndustrySubSegment.SubSegment,",
+						"          CompanyIndustrySubsegment2 = CompanyIndustrySubsegment2",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flatten2",
+						"flatten2 foldDown(unroll(CompanyIndustrySubsegment2),",
+						"     mapColumn(",
+						"          {CRM Company ID},",
+						"          {Account Group},",
+						"          {Sales Cluster / Sales Office},",
+						"          {Sales Region / Sales Group},",
+						"          {Company Status},",
+						"          {Key Account Type},",
+						"          {Key Account Name},",
+						"          {Key Account Manager},",
+						"          {Customer Lifecycle},",
+						"          {Number of Machines},",
+						"          {Sales Area},",
+						"          WebCreatedCustomer,",
+						"          {Company Market},",
+						"          {Distributor Level},",
+						"          {Number Of Employees},",
+						"          {Address 1: City},",
+						"          {Address: ZIP/Postal Code},",
+						"          {Address: State/Province},",
+						"          {Account Owner Email Address},",
+						"          {Company Name},",
+						"          {Account Owner Last Name},",
+						"          {Account Owner First Name},",
+						"          {Company Customer Type},",
+						"          {Company Country},",
+						"          {Company Account Development Strategy},",
+						"          {Company EBP Code},",
+						"          Segment,",
+						"          SubSegment,",
+						"          SubSegment2 = CompanyIndustrySubsegment2.SubSegment2",
+						"     ),",
+						"     skipDuplicateMapInputs: false,",
+						"     skipDuplicateMapOutputs: false) ~> flatten3",
+						"flatten3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Json1')]",
+				"[concat(variables('factoryId'), '/datasets/Json3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Json3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "output.json",
+						"fileSystem": "processing"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stroagefiletrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "pipeline3_test",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/input/blobs/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('stroagefiletrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline3_test')]"
 			]
 		}
 	]

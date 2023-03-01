@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'testblob1_ls'"
 		},
+		"AzureDataLakeStorage1_ls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1_ls'"
+		},
 		"adls_ls_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stg1devtesti.dfs.core.windows.net/"
@@ -40,6 +44,14 @@
 			"defaultValue": [
 				"storage12rest.dfs.core.windows.net"
 			]
+		},
+		"AzureDataLakeStorage1_ls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stg1devtesti.dfs.core.windows.net/"
+		},
+		"stroagefiletrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
 		"containerUri": {
 			"type": "string",
@@ -71,11 +83,17 @@
 					"testblob1_ls_accountKey": {
 						"value": "[parameters('testblob1_ls_accountKey')]"
 					},
+					"AzureDataLakeStorage1_ls_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_ls_accountKey')]"
+					},
 					"adls_ls_properties_typeProperties_url": {
 						"value": "[parameters('adls_ls_properties_typeProperties_url')]"
 					},
 					"testblob1_ls_properties_typeProperties_url": {
 						"value": "[parameters('testblob1_ls_properties_typeProperties_url')]"
+					},
+					"AzureDataLakeStorage1_ls_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_ls_properties_typeProperties_url')]"
 					},
 					"AzureDataLakeStorage972_properties_privateLinkResourceId": {
 						"value": "[parameters('AzureDataLakeStorage972_properties_privateLinkResourceId')]"
@@ -91,6 +109,9 @@
 					},
 					"managedpe_storage_properties_fqdns": {
 						"value": "[parameters('managedpe_storage_properties_fqdns')]"
+					},
+					"stroagefiletrigger_properties_typeProperties_scope": {
+						"value": "[parameters('stroagefiletrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
