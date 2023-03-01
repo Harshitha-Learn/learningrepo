@@ -56,7 +56,7 @@
 							"typeProperties": {
 								"variableName": "TestVar",
 								"value": {
-									"value": "@item().CRMCompanyID",
+									"value": "@item().CRM Company ID",
 									"type": "Expression"
 								}
 							}
