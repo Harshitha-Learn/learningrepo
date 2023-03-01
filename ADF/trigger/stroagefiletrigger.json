@@ -8,6 +8,10 @@
 				"pipelineReference": {
 					"referenceName": "pipeline3_test_jsonfileprocess",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"FolderPath": "@triggerBody().folderPath",
+					"FileName": "@triggerBody().fileName"
 				}
 			}
 		],
