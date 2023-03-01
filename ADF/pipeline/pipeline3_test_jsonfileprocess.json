@@ -1,5 +1,5 @@
 {
-	"name": "pipeline3_test",
+	"name": "pipeline3_test_jsonfileprocess",
 	"properties": {
 		"activities": [
 			{

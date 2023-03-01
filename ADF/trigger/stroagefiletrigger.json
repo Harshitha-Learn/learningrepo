@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "pipeline3_test",
+					"referenceName": "pipeline3_test_jsonfileprocess",
 					"type": "PipelineReference"
 				}
 			}
