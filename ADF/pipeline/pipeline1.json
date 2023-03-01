@@ -84,7 +84,10 @@
 					},
 					"dataset": {
 						"referenceName": "csvip",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"path": "input"
+						}
 					},
 					"firstRowOnly": false
 				}
