@@ -30,7 +30,7 @@
 			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"
 		},
 		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
-			"value": "@triggerBody().filePath"
+			"value": "@triggerBody().folderPath"
 		},
 		"trigger1pipeline1_properties_typeProperties_scope": {
 			"value": "/subscriptions/97a9a77c-8104-417e-995b-eace2cfd65eb/resourceGroups/rg-new/providers/Microsoft.Storage/storageAccounts/stg1devtesti"

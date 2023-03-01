@@ -51,7 +51,7 @@
 		},
 		"trigger1pipeline1_properties_pipeline1_copy1_parameters_Path": {
 			"type": "string",
-			"defaultValue": "@triggerBody().filePath"
+			"defaultValue": "@triggerBody().folderPath"
 		},
 		"trigger1pipeline1_properties_typeProperties_scope": {
 			"type": "string",
@@ -1372,6 +1372,7 @@
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/input/blobs/",
+					"blobPathEndsWith": "*.json",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('trigger1pipeline1_properties_typeProperties_scope')]",
 					"events": [
