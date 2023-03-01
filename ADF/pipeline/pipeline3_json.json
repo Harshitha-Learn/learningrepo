@@ -1,0 +1,159 @@
+{
+	"name": "pipeline3_json",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "arrayOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CRM Company ID']"
+								},
+								"sink": {
+									"path": "$['CRM Company ID']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Account Group']"
+								},
+								"sink": {
+									"path": "$['Account Group']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Sales Cluster / Sales Office']"
+								},
+								"sink": {
+									"path": "$['Sales Cluster / Sales Office']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Sales Region / Sales Group']"
+								},
+								"sink": {
+									"path": "$['Sales Region / Sales Group']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Account Owner First Name']"
+								},
+								"sink": {
+									"path": "$['Account Owner First Name']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Industry Sub Segment 2'][0]"
+								},
+								"sink": {
+									"path": "$['Company Industry Sub Segment 2']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Industry Sub Segment'][0]"
+								},
+								"sink": {
+									"path": "$['Company Industry Sub Segment']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Industry Segment'][0]"
+								},
+								"sink": {
+									"path": "$['Company Industry Segment']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Customer Type']"
+								},
+								"sink": {
+									"path": "$['Company Customer Type']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Country']"
+								},
+								"sink": {
+									"path": "$['Company Country']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company Account Development Strategy']"
+								},
+								"sink": {
+									"path": "$['Company Account Development Strategy']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Company EBP Code']"
+								},
+								"sink": {
+									"path": "$['Company EBP Code']"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Json2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
