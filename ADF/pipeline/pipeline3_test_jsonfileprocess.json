@@ -13,7 +13,6 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "dataflow1",
@@ -65,6 +64,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"FolderPath": {
+				"type": "string"
+			},
+			"FileName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"TestVar": {
 				"type": "String"
