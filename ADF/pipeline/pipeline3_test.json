@@ -25,7 +25,7 @@
 					},
 					"traceLevel": "None",
 					"cacheSinks": {
-						"firstRowOnly": true
+						"firstRowOnly": false
 					}
 				}
 			},
@@ -43,7 +43,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('dataflow1').output",
+						"value": "@activity('dataflow1').output.runStatus.output.sink1.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
