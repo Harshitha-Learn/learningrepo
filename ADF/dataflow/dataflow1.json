@@ -1,0 +1,92 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Json1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "flatten1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {CRM Company ID} as string,",
+				"          {Account Group} as string,",
+				"          {Sales Cluster / Sales Office} as string,",
+				"          {Sales Region / Sales Group} as string,",
+				"          {Company Status} as string,",
+				"          {Key Account Type} as string,",
+				"          {Key Account Name} as string,",
+				"          {Key Account Manager} as string,",
+				"          {Customer Lifecycle} as string,",
+				"          {Number of Machines} as string,",
+				"          {Sales Area} as string,",
+				"          WebCreatedCustomer as string,",
+				"          {Company Market} as string,",
+				"          {Distributor Level} as string,",
+				"          {Number Of Employees} as string,",
+				"          {Address 1: City} as string,",
+				"          {Address: ZIP/Postal Code} as string,",
+				"          {Address: State/Province} as string,",
+				"          {Account Owner Email Address} as string,",
+				"          {Company Name} as string,",
+				"          {Account Owner Last Name} as string,",
+				"          {Account Owner First Name} as string,",
+				"          {Company Industry Sub Segment 2} as (SubSegment2 as string)[],",
+				"          {Company Industry Sub Segment} as (SubSegment as string)[],",
+				"          {Company Industry Segment} as (Segment as string)[],",
+				"          {Company Customer Type} as string,",
+				"          {Company Country} as string,",
+				"          {Company Account Development Strategy} as string,",
+				"          {Company EBP Code} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source1",
+				"source1 foldDown(unroll(Company Industry Segment),",
+				"     mapColumn(",
+				"          {CRM Company ID},",
+				"          {Account Group},",
+				"          {Sales Cluster / Sales Office},",
+				"          {Sales Region / Sales Group},",
+				"          {Company Status},",
+				"          {Key Account Type},",
+				"          {Key Account Name},",
+				"          {Key Account Manager},",
+				"          {Customer Lifecycle},",
+				"          {Number of Machines},",
+				"          {Sales Area},",
+				"          WebCreatedCustomer,",
+				"          {Company Market},",
+				"          {Distributor Level},",
+				"          {Number Of Employees},",
+				"          {Address 1: City},",
+				"          {Address: ZIP/Postal Code},",
+				"          {Address: State/Province},",
+				"          {Account Owner Email Address},",
+				"          {Company Name},",
+				"          {Account Owner Last Name},",
+				"          {Account Owner First Name},",
+				"          {Company Customer Type},",
+				"          {Company Country},",
+				"          {Company Account Development Strategy},",
+				"          {Company EBP Code},",
+				"          Segment = {Company Industry Segment}.Segment",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flatten1"
+			]
+		}
+	}
+}
