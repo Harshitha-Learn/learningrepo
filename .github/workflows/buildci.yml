@@ -43,7 +43,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build  --configuration Release
-        working-directory: sampleapp11
+        working-directory: sampleapp118
 
       - name: dotnet  publish
         run: |
@@ -58,3 +58,26 @@ jobs:
         with:
             name: webapp1
             path: ./sampleapp11/webapp1/Release
+            
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          # For posting a rich message using Block Kit
+          payload: |
+            {
+              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
