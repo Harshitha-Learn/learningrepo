@@ -62,7 +62,27 @@ jobs:
                   app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
                   package: ./sampleapp11/Dev_${{github.run_id}}/
 
-
+          - name: Send custom JSON data to Slack workflow
+            id: slack
+            uses: slackapi/slack-github-action@v1.23.0
+            with:
+              # For posting a rich message using Block Kit
+              payload: |
+                {
+                  "text": "GitHub Action build result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
+                      }
+                    }
+                  ]
+                }
+            env:
+              SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+              SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
   deploy_on_test:
        if: ${{ github.event.inputs.env == 'Test'  || inputs.env == 'Test' }}
       # if: github.event.inputs.env == 'Test' 
@@ -95,31 +115,25 @@ jobs:
             with: 
                   app-name: ${{ env.AZURE_WEBAPP_NAME_test }} # Replace with your app name
                   package: ./sampleapp12/
-  slack_status_update:      
-        runs-on: ubuntu-latest
-        if: always()
-        needs: [deploy_on_test,deploy_on_dev, build]
-        steps:
-        - name: Send custom JSON data to Slack workflow
-          id: slack
-          
-          
-          uses: slackapi/slack-github-action@v1.23.0
-          with:
-            # For posting a rich message using Block Kit
-            payload: |
-              {
-                "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+
+          - name: Send custom JSON data to Slack workflow
+            id: slack
+            uses: slackapi/slack-github-action@v1.23.0
+            with:
+              # For posting a rich message using Block Kit
+              payload: |
+                {
+                  "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
+                      }
                     }
-                  }
-                ]
-              }
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
-            SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+                  ]
+                }
+            env:
+              SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+              SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
