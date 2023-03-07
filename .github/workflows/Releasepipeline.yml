@@ -97,12 +97,13 @@ jobs:
                   package: ./sampleapp12/
   slack_status_update:      
         runs-on: ubuntu-latest
+        if: always()
         needs: [deploy_on_test,deploy_on_dev, build]
         steps:
         - name: Send custom JSON data to Slack workflow
           id: slack
           
-          if: always()
+          
           uses: slackapi/slack-github-action@v1.23.0
           with:
             # For posting a rich message using Block Kit
