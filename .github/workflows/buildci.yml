@@ -73,8 +73,7 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                    
-                   "text": "GitHub Action result: \n Status: ${{ job.status }}\n JobDetails: ${{ github.job }} job \n  worflow: ${{ github.workflow }} Repository: ${{ github.repository }}  "
-                  }
+                 "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }}  "  }
                 }
               ]
             }
