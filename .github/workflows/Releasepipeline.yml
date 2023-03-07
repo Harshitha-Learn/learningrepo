@@ -69,19 +69,17 @@ jobs:
             with:
               # For posting a rich message using Block Kit
               payload: |
-                {
-                  "text": "GitHub Action build result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}",
-                  "blocks": [
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
-              
-                     }
-                    }
-                  ]
-                }
+                        {
+                         "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "mrkdwn",
+
+                             "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+                            }
+                          ]
+                        }
             env:
               SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
               SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
@@ -125,19 +123,17 @@ jobs:
             with:
               # For posting a rich message using Block Kit
               payload: |
-                {
-                  "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}",
-                  "blocks": [
-                    {
-                      "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+                        {
+                         "blocks": [
+                            {
+                              "type": "section",
+                              "text": {
+                                "type": "mrkdwn",
 
-                      }
-                    }
-                  ]
-                }
+                             "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+                            }
+                          ]
+                        }
             env:
               SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
               SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
