@@ -76,8 +76,9 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
-                      }
+                        "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+              
+                     }
                     }
                   ]
                 }
@@ -131,7 +132,8 @@ jobs:
                       "type": "section",
                       "text": {
                         "type": "mrkdwn",
-                        "text": "GitHub Action result:  ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
+                        "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+
                       }
                     }
                   ]
