@@ -67,13 +67,13 @@ jobs:
           # For posting a rich message using Block Kits
           payload: |
             {
-              "text": "GitHub Action build result: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}",
-              "blocks": [
+             "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "GitHub Action build results: ${{ github.job }} job in worflow ${{ github.workflow }} of ${{ github.repository }} has ${{ job.status }}"
+                   
+                   "text": "GitHub Action result: \n Status: ${{ job.status }}\n JobDetails: ${{ github.job }} job \n  worflow: ${{ github.workflow }} Repository: ${{ github.repository }}  "
                   }
                 }
               ]
