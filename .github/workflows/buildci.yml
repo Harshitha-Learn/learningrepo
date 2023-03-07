@@ -43,7 +43,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build  --configuration Release
-        working-directory: sampleapp11
+        working-directory: sampleapp115
 
       - name: dotnet  publish
         run: |
