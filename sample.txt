@@ -1,0 +1,200 @@
+[ApiController]
+[Route("api/[controller]")]
+public class DataController : ControllerBase
+{
+    private readonly IBackgroundTaskQueue _taskQueue;
+
+    public DataController(IBackgroundTaskQueue taskQueue)
+    {
+        _taskQueue = taskQueue;
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] BlobStorageData data)
+    {
+        // Queue the background task to run the long-running process
+        _taskQueue.QueueBackgroundTask(async cancellationToken =>
+        {
+            await DataProcessingService.ProcessDataAsync(data, cancellationToken);
+        });
+
+        // Return a 202 response to indicate that the request has been accepted
+        return Accepted();
+    }
+}
+
+public class DataProcessingService
+{
+    private readonly BlobStorageService _blobStorageService;
+    private readonly DatabaseService _databaseService;
+
+    public DataProcessingService(BlobStorageService blobStorageService, DatabaseService databaseService)
+    {
+        _blobStorageService = blobStorageService;
+        _databaseService = databaseService;
+    }
+
+    public async Task ProcessDataAsync(BlobStorageData data, CancellationToken cancellationToken)
+    {
+        // Get data from blob storage
+        var blobData = await _blobStorageService.GetDataAsync(data.BlobName, cancellationToken);
+
+        // Insert data into database
+        await _databaseService.InsertDataAsync(blobData, cancellationToken);
+
+        // Long-running process completed
+    }
+}
+
+public class BackgroundTaskQueue : IBackgroundTaskQueue
+{
+    private readonly ConcurrentQueue<Func<CancellationToken, Task>> _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
+    private readonly SemaphoreSlim _signal = new SemaphoreSlim(0);
+
+    public void QueueBackgroundTask(Func<CancellationToken, Task> task)
+    {
+        if (task == null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
+
+        _taskQueue.Enqueue(task);
+        _signal.Release();
+    }
+
+    public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
+    {
+        await _signal.WaitAsync(cancellationToken);
+        _taskQueue.TryDequeue(out var task);
+
+        return task;
+    }
+}
+
+public interface IBackgroundTaskQueue
+{
+    void QueueBackgroundTask(Func<CancellationToken, Task> task);
+
+    Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken);
+}
+
+
+
+
+
+
+In this example, the DataController receives data required to get data from blob storage and insert it into a database, queues a background task to run the DataProcessingService.ProcessDataAsync method with the data, and returns an HTTP 202 response to indicate that the request has been accepted.
+
+The DataProcessingService contains the code for the long-running process. It gets data from blob storage and inserts it into the database asynchronously. This service should be designed to run asynchronously and return a Task object that can be awaited or canceled.
+
+The BackgroundTaskQueue is an implementation of the IBackgroundTaskQueue interface that handles queuing and executing background tasks. It uses a ConcurrentQueue to store the tasks and a SemaphoreSlim to signal when there are tasks in the queue. The QueueBackgroundTask method enqueues a task, and the DequeueAsync method dequeues a task and returns it asynchronously.
+
+Note that this example assumes that you have already implemented the BlobStorageService and DatabaseService classes to interact with blob storage and the database.
+
+
+create a controller which returns 202 response after it fires a long running process like getting data from blob storage and inserting into database without waiting for it to complete include IBackgroundTaskQueue implementation
+
+
+
+
+============================
+
+
+
+[ApiController]
+[Route("api/[controller]")]
+public class DataController : ControllerBase
+{
+    private readonly IBackgroundTaskQueue _taskQueue;
+
+    public DataController(IBackgroundTaskQueue taskQueue)
+    {
+        _taskQueue = taskQueue;
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] BlobStorageData data)
+    {
+        // Queue the background task to run the long-running process
+        _taskQueue.QueueBackgroundTask(async cancellationToken =>
+        {
+            using (var scope = HttpContext.RequestServices.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var dataProcessingService = services.GetRequiredService<DataProcessingService>();
+                await dataProcessingService.ProcessDataAsync(data, cancellationToken);
+            }
+        });
+
+        // Return a 202 response to indicate that the request has been accepted
+        return Accepted();
+    }
+}
+
+public class DataProcessingService
+{
+    private readonly BlobStorageService _blobStorageService;
+    private readonly DatabaseService _databaseService;
+
+    public DataProcessingService(BlobStorageService blobStorageService, DatabaseService databaseService)
+    {
+        _blobStorageService = blobStorageService;
+        _databaseService = databaseService;
+    }
+
+    public async Task ProcessDataAsync(BlobStorageData data, CancellationToken cancellationToken)
+    {
+        // Get data from blob storage
+        var blobData = await _blobStorageService.GetDataAsync(data.BlobName, cancellationToken);
+
+        // Insert data into database
+        await _databaseService.InsertDataAsync(blobData, cancellationToken);
+
+        // Long-running process completed
+    }
+}
+
+public class BackgroundTaskQueue : IBackgroundTaskQueue
+{
+    private readonly ConcurrentQueue<Func<CancellationToken, Task>> _taskQueue = new ConcurrentQueue<Func<CancellationToken, Task>>();
+    private readonly SemaphoreSlim _signal = new SemaphoreSlim(0);
+
+    public void QueueBackgroundTask(Func<CancellationToken, Task> task)
+    {
+        if (task == null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
+
+        _taskQueue.Enqueue(task);
+        _signal.Release();
+    }
+
+    public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
+    {
+        await _signal.WaitAsync(cancellationToken);
+        _taskQueue.TryDequeue(out var task);
+
+        return task;
+    }
+}
+
+public interface IBackgroundTaskQueue
+{
+    void QueueBackgroundTask(Func<CancellationToken, Task> task);
+
+    Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken);
+}
+
+
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+    services.AddControllers();
+}
+
+
+
+n this implementation, QueueBackgroundTask enqueues the task to the _workItems collection and signals the _signal semaphore to wake up any waiting tasks. DequeueAsync waits for the _signal semaphore to become available, dequeues the next task, and returns it.
+
