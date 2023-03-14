@@ -198,3 +198,38 @@ public void ConfigureServices(IServiceCollection services)
 
 n this implementation, QueueBackgroundTask enqueues the task to the _workItems collection and signals the _signal semaphore to wake up any waiting tasks. DequeueAsync waits for the _signal semaphore to become available, dequeues the next task, and returns it.
 
+
+
+
+public class BackgroundQueueService : BackgroundService
+{
+    private readonly IBackgroundTaskQueue _taskQueue;
+    private readonly ILogger _logger;
+
+    public BackgroundQueueService(IBackgroundTaskQueue taskQueue, ILogger<BackgroundQueueService> logger)
+    {
+        _taskQueue = taskQueue;
+        _logger = logger;
+    }
+
+    protected async override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Background task queue is now running.");
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            var workItem = await _taskQueue.DequeueAsync(stoppingToken);
+
+            try
+            {
+                await workItem(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error occurred executing {nameof(workItem)}.");
+            }
+        }
+
+        _logger.LogInformation("Background task queue is stopping.");
+    }
+}
