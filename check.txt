@@ -1,0 +1,132 @@
+[ApiController]
+[Route("[controller]")]
+public class MyController : ControllerBase
+{
+    private readonly IBackgroundTaskQueue _taskQueue;
+
+    public MyController(IBackgroundTaskQueue taskQueue)
+    {
+        _taskQueue = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
+    }
+
+    [HttpPost]
+    public IActionResult Post([FromBody] BackgroundTask task)
+    {
+        // Check if the blob file exists here
+        // ...
+
+        // Queue the background task for execution
+        _taskQueue.QueueBackgroundWorkItem(task);
+
+        // Return 202 Accepted response
+        return Accepted();
+    }
+}
+
+====
+public interface IWorker
+{
+    Task DoWorkAsync(CancellationToken stoppingToken);
+}
+
+
+===
+
+public class BackgroundWorker : BackgroundService, IWorker
+{
+    private readonly ILogger<BackgroundWorker> _logger;
+    private readonly IBackgroundTaskQueue _taskQueue;
+
+    public BackgroundWorker(IBackgroundTaskQueue taskQueue, ILogger<BackgroundWorker> logger)
+    {
+        _taskQueue = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation("Background Worker is starting.");
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            var task = await _taskQueue.DequeueAsync(stoppingToken);
+            try
+            {
+                await DoWorkAsync(task, stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error occurred executing task {task}");
+            }
+        }
+
+        _logger.LogInformation("Background Worker is stopping.");
+    }
+
+    public async Task DoWorkAsync(BackgroundTask task, CancellationToken stoppingToken)
+    {
+        _logger.LogInformation($"Executing background task for file {task.FileName}");
+
+        // Read data from blob file and insert each record to database here
+        // ...
+
+        await Task.CompletedTask;
+    }
+}
+
+
+===
+
+public class BackgroundTaskQueue : IBackgroundTaskQueue
+{
+    private ConcurrentQueue<BackgroundTask> _workItems = new ConcurrentQueue<BackgroundTask>();
+    private SemaphoreSlim _signal = new SemaphoreSlim(0);
+
+    public void QueueBackgroundWorkItem(BackgroundTask task)
+    {
+        if (task == null)
+        {
+            throw new ArgumentNullException(nameof(task));
+        }
+
+        _workItems.Enqueue(task);
+        _signal.Release();
+    }
+
+    public async Task<BackgroundTask> DequeueAsync(CancellationToken cancellationToken)
+    {
+        await _signal.WaitAsync(cancellationToken);
+        _workItems.TryDequeue(out var workItem);
+
+        return workItem;
+    }
+}
+
+
+
+====
+public interface IBackgroundTaskQueue
+{
+    void QueueBackgroundWorkItem(BackgroundTask task);
+    Task<BackgroundTask> DequeueAsync(CancellationToken cancellationToken);
+}
+
+
+-====
+
+
+public class BackgroundTask
+{
+    public string FileName { get; set; }
+}
+
+
+===
+
+
+To wire everything up, register the services with the dependency injection container in the ConfigureServices method of the Startup class:
+
+
+
+
+
