@@ -1,0 +1,133 @@
+public class DataProcessingService : BackgroundService
+{
+    private readonly IDataService _dataService;
+    private readonly ConcurrentQueue<DataRecord> _dataQueue;
+    private readonly SemaphoreSlim _semaphore;
+    private readonly ManualResetEventSlim _newDataTaskEvent;
+
+    public DataProcessingService(IDataService dataService)
+    {
+        _dataService = dataService;
+        _dataQueue = new ConcurrentQueue<DataRecord>();
+        _semaphore = new SemaphoreSlim(10); // Limit to 10 concurrent tasks
+        _newDataTaskEvent = new ManualResetEventSlim(false); // Initially set to non-signaled state
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            // Wait for a new task to be added to the queue
+            _newDataTaskEvent.Wait(stoppingToken);
+
+            while (_dataQueue.TryDequeue(out var record))
+            {
+                await ProcessDataAsync(record, stoppingToken);
+            }
+
+            // Reset the event
+            _newDataTaskEvent.Reset();
+
+            // Wait before processing next batch of data
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+        }
+    }
+
+    public void EnqueueDataForProcessing(DataRecord record)
+    {
+        _dataQueue.Enqueue(record);
+
+        // Signal the event to wake up the ExecuteAsync method
+        _newDataTaskEvent.Set();
+    }
+
+    private async Task ProcessDataAsync(DataRecord record, CancellationToken cancellationToken)
+    {
+        await _semaphore.WaitAsync(cancellationToken);
+
+        try
+        {
+            // Fetch file from blob storage
+            var file = await _dataService.GetFileFromBlobStorageAsync(record.FileId);
+
+            // Loop through each record in the file and process it
+            foreach (var data in file)
+            {
+                // Perform data processing
+
+                // Write data to database
+                await _dataService.WriteDataToDatabaseAsync(data);
+            }
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+}
+
+
+===================
+
+
+public class DataService : IDataService
+{
+    private readonly string _blobStorageConnectionString;
+    private readonly string _blobContainerName;
+    private readonly string _databaseConnectionString;
+
+    public DataService(IConfiguration configuration)
+    {
+        _blobStorageConnectionString = configuration.GetValue<string>("BlobStorageConnectionString");
+        _blobContainerName = configuration.GetValue<string>("BlobContainerName");
+        _databaseConnectionString = configuration.GetValue<string>("DatabaseConnectionString");
+    }
+
+    public async Task<IEnumerable<DataRecord>> GetDataAsync()
+    {
+        // Connect to blob storage
+        var blobServiceClient = new BlobServiceClient(_blobStorageConnectionString);
+        var containerClient = blobServiceClient.GetBlobContainerClient(_blobContainerName);
+
+        // Get blob contents
+        var blobClient = containerClient.GetBlobClient("data.csv");
+        var response = await blobClient.DownloadAsync();
+
+        // Read CSV data
+        using var streamReader = new StreamReader(response.Value.Content);
+        using var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+        return csvReader.GetRecords<DataRecord>();
+    }
+
+    public async Task WriteDataToDatabaseAsync(DataRecord record)
+    {
+        // Connect to database
+        using var dbContext = new MyDbContext(_databaseConnectionString);
+
+        // Write data to database
+        await dbContext.DataRecords.AddAsync(record);
+        await dbContext.SaveChangesAsync();
+    }
+}
+
+
+
+========
+
+public class DataRecord
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    // Other fields
+}
+
+
+=====
+
+
+In this updated example, a ManualResetEventSlim named _newDataTaskEvent is used to signal the ExecuteAsync method to wake up and process the new task. The EnqueueDataForProcessing method sets the _newDataTaskEvent to signaled state whenever a new task is added to the processing queue, which wakes up the ExecuteAsync method from its wait state.
+
+The ExecuteAsync method waits for a new task to be added to the queue by calling the Wait method on the _newDataTaskEvent. Once a new task is added to the queue and the event is signaled, the method dequeues and processes the tasks in the queue, resets the event to a non-signaled state, and waits for a new task to be added to the queue again.
+
+This way, the ExecuteAsync method only runs when a new task is added to the queue, and it goes back to a wait state when there are no tasks in the queue, reducing unnecessary processing and resource usage.
