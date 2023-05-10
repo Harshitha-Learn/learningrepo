@@ -24,4 +24,4 @@ jobs:
          echo $GITHUB_SHA
          echo $GITHUB_REPOSITORY
          echo $GITHUB_REF
-         echo ${{jobs.build.environment.name}}
+      
