@@ -2,55 +2,61 @@ name: Build CI
 
 on:  
   workflow_dispatch: 
-#  push:
- #    branches: [ "main", "releases-*" ]
- #    paths-ignore:
-  #    - 'docs/**'
-  #    - 'ADF/**'
- # pull_request:
- #    branches: [ "main",  "releases-*" ]
+  push:
+     branches: 
+      - 'main'
+      - 'release-**'
+     paths:     
+      - 'ADF/**'
+  pull_request:
+     branches: 
+      - 'main'
+      - 'release-**'
+     paths:     
+       - 'ADF/**'
   workflow_call:
     
 
-env:
-  AZURE_WEBAPP_NAME: b1webapp 
-  AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
- # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
- # RUN_ID: ${{ github.run_id }}
+env: 
+ LOCATION: 'easteurope'
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
+    #[self-hosted, <name>] for selfhosted
      
 
     steps:
       # Checkout the repo
       - uses: actions/checkout@v3
-      - name: List var
+      
+      - name: 'Lint code'
         run: |
-             echo $GITHUB_SHA
-             echo $GITHUB_REPOSITORY
-             echo $GITHUB_REF
+         az bicep build --file ./Infra/<folder>/main.bicep
              
-      # Setup .NET Core SDK
+      # Setup .NET Core SDK -- no need of this if dotnet is installed on selfhosted runner
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
+      - name: Services - restore dependencies
+        run: |
+         dotnet restore 
+        working-directory: sampleapp11 #folder path where sln exists
      
       # Run dotnet build and publish
       - name: dotnet build 
         run: |
-          dotnet restore
-          dotnet build  --configuration Release
+          dotnet build  --configuration Release --no-restore
+        working-directory: sampleapp11
+
+      - name: unit Test run
+        run: dotnet test --logger trx
         working-directory: sampleapp11
 
       - name: dotnet  publish
-        run: |
-         
+        run: |         
           dotnet publish  --configuration Release --output Release
         working-directory: sampleapp11/webapp1/
-
 
 
       - name: Publish Artifacts
@@ -58,6 +64,17 @@ jobs:
         with:
             name: webapp1
             path: ./sampleapp11/webapp1/Release
+            
+          #EF Migration 
+      - name: DB - Generate EF Migration script
+        run: dotnet-ef migrations script  --output SQL/GeneratedSQLScripts.sql --idempotent
+        working-directory: <path to proj web/controller code>
+
+      - name: EF SQL scripts - Publish Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+             name: SQLScripts
+             path: ./<path to proj web/controller code>/SQL
             
       - name: Send custom JSON data to Slack workflow
         id: slack
