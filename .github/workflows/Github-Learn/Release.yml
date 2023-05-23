@@ -1,82 +1,128 @@
-name: Build CI
+name: Release
 
 on:  
-  workflow_dispatch: 
-#  push:
- #    branches: [ "main", "releases-*" ]
- #    paths-ignore:
-  #    - 'docs/**'
-  #    - 'ADF/**'
- # pull_request:
- #    branches: [ "main",  "releases-*" ]
   workflow_call:
-    
+   inputs:      
+      Environment:
+        type: string
+        description: Environment name for Release
+        required: true
+  workflow_dispatch:
+   inputs:      
+      Environment:
+        type: environment
+        description: Select the environment for deployment
+        required: true
 
-env:
-  AZURE_WEBAPP_NAME: b1webapp 
-  AZURE_WEBAPP_NAME_test: sampleapp1120230202210536  # set this to your application's namei
- # AZURE_WEBAPP_PACKAGE_PATH: './published'       # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '6.0.x'           # set this to the dot net version to use
- # RUN_ID: ${{ github.run_id }}
+permissions: write-all
+
+env: 
+ LOCATION: 'easteurope'
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  Build:
+     uses: ./.github/workflows/<path>/build.yml   
+     secrets: inherit
      
+  Dev_Deploy:    
+       if: ${{ github.event.inputs.Environment == 'Dev'  || inputs.Environment == 'Dev' }}
+       runs-on: [self-hosted, <name>]
+       needs: Build
+       environment: Dev
+       steps:
+          - name: 'Checkout'
+            uses: actions/checkout@v3
+ 
+          - name: Get current date
+            id: date
+            run: |
+                $date = Get-Date -Format "yyyy-MM-dd-HHmmss"
+                echo "date=$date" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
 
-    steps:
-      # Checkout the repo
-      - uses: actions/checkout@v3
-      - name: List var
-        run: |
-             echo $GITHUB_SHA
-             echo $GITHUB_REPOSITORY
-             echo $GITHUB_REF
-             
-      # Setup .NET Core SDK
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }} 
-     
-      # Run dotnet build and publish
-      - name: dotnet build 
-        run: |
-          dotnet restore
-          dotnet build  --configuration Release
-        working-directory: sampleapp11
+          - name: 'Az CLI login' # SP creds for authentication
+            uses: azure/login@v1
+            with:
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: dotnet  publish
-        run: |
-         
-          dotnet publish  --configuration Release --output Release
-        working-directory: sampleapp11/webapp1/
+          - name: 'Bicep Validation'
+            id: bicep-validation
+            run: |
+              az deployment sub validate `
+              --name infra-deploy-${{ steps.date.outputs.date }} `
+              --location ${{ env.LOCATION }} `
+              --template-file ./Infra/<path>/main.bicep `
+              --parameters ./Infra/<path>/param/param-we-<env-name>.json `
+              --parameters GithubBranchname=${{github.ref_name}} `
+              --parameters GithubRunNumber=${{github.run_number}}
 
+          - name: 'Deploy Bicep'
+            id: deploy-bicep
+            run: |
+              $deploy = az deployment sub create `
+              --name infra-deploy-${{ steps.date.outputs.date }} `
+              --location ${{ env.LOCATION }} `
+              --template-file ./Infra/<path>/main.bicep `
+              --query properties.outputs `
+              --parameters ./Infra/<path>/param/param-we-dev.json `
+              --parameters GithubBranchname=${{github.ref_name}} `
+              --parameters GithubRunNumber=${{github.run_number}} | ConvertFrom-Json
+              
+              $WebAppName = $deploy.WebApp_Name.value
+              $WebAppRg = $deploy.Webapp_rg_Name.value
 
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-            name: webapp1
-            path: ./sampleapp11/webapp1/Release
+              echo "WEBAPP_NAME=$WebAppName" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
+              echo "WEBAPP_RG_NAME=$WebAppRg" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
             
-      - name: Send custom JSON data to Slack workflow
-        id: slack
-        if: ${{ failure() }}
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          # For posting a rich message using Block Kits
-          payload: |
-            {
-             "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
+          - uses: actions/download-artifact@v3
+            with:
+                path: ./Artifacts_${{github.run_id}}/
+          
+          - name: 'Execute SQL script'
+            uses: azure/sql-action@v2
+            with:        
+                connection-string: ${{ secrets.SPN_SQL_CONNECTION_STRING }}
+                path: './Artifacts_${{github.run_id}}/SQLScripts/GeneratedSQLScripts.sql'
+
+        
+          - name: Webapp - Create staging slot'
+            run: |
+               az webapp deployment slot create --name ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --resource-group ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} --slot staging --configuration-source ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }}
+               
+          - name: 'Webapp - Deploy webapp to staging slot '
+            uses: azure/webapps-deploy@v2
+            with: 
+                  app-name: ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }}
+                  package: ./Artifacts_${{github.run_id}}/<path>/
+                  slot-name: staging
+                  
+          - name: 'Webapp - Swap staging with Production slot'
+            run: |
+                  az webapp deployment slot swap  -g ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} -n ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --slot staging --target-slot production
+         
+          - name: 'Services - Delete staging slot'
+            run: |     
+                 az webapp deployment slot delete --name ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --resource-group ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} --slot staging
+             
+          # This must be last step in a Job
+          - name: Send custom notification to Slack on Failure
+            id: slack
+            if: ${{ failure() }}
+            uses: slackapi/slack-github-action@v1.23.0
+            with:
+                  # For posting a rich message using Block Kits
+                  payload: |
+                    {
+                     "blocks": [
+                        {
+                          "type": "section",
+                          "text": {
+                            "type": "mrkdwn",
                    
-                 "text": "CCM GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
-                }
-              ]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+                         "text": "GitHub Action result: \n *Status:* ${{ job.status }}\n *Job Name:* ${{ github.job }}  \n *worflow:* ${{ github.workflow }} \n *Repository:* ${{ github.repository }} \n Link: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} "  }
+                        }
+                      ]
+                    }
+            env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                  SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
