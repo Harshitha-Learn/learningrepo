@@ -90,7 +90,7 @@ jobs:
                az webapp deployment slot create --name ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --resource-group ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} --slot staging --configuration-source ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }}
                
           - name: 'Webapp - Deploy webapp to staging slot '
-            uses: azure/webapps-deploy@v2
+            uses: azure/webapps-deploy@v2 # Azure/functions-action@v1 for functions
             with: 
                   app-name: ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }}
                   package: ./Artifacts_${{github.run_id}}/<path>/
