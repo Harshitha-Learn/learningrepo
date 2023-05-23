@@ -53,8 +53,8 @@ jobs:
               --location ${{ env.LOCATION }} `
               --template-file ./Infra/<path>/main.bicep `
               --parameters ./Infra/<path>/param/param-we-<env-name>.json `
-              --parameters GithubBranchname=${{github.ref_name}} `
-              --parameters GithubRunNumber=${{github.run_number}}
+              --parameters Branchname=${{github.ref_name}} `
+              --parameters RunNumber=${{github.run_number}}
 
           - name: 'Deploy Bicep'
             id: deploy-bicep
@@ -65,8 +65,8 @@ jobs:
               --template-file ./Infra/<path>/main.bicep `
               --query properties.outputs `
               --parameters ./Infra/<path>/param/param-we-dev.json `
-              --parameters GithubBranchname=${{github.ref_name}} `
-              --parameters GithubRunNumber=${{github.run_number}} | ConvertFrom-Json
+              --parameters Branchname=${{github.ref_name}} `
+              --parameters RunNumber=${{github.run_number}} | ConvertFrom-Json
               
               $WebAppName = $deploy.WebApp_Name.value
               $WebAppRg = $deploy.Webapp_rg_Name.value
@@ -100,7 +100,7 @@ jobs:
             run: |
                   az webapp deployment slot swap  -g ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} -n ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --slot staging --target-slot production
          
-          - name: 'Services - Delete staging slot'
+          - name: 'Webapp - Delete staging slot'
             run: |     
                  az webapp deployment slot delete --name ${{ steps.deploy-bicep.outputs.WEBAPP_NAME }} --resource-group ${{ steps.deploy-bicep.outputs.WEBAPP_RG_NAME }} --slot staging
              
